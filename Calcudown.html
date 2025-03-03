@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,8 +8,8 @@
         /* General styling for the body */
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #2986cc;
-            color: #333;
+            background-color: #dff0ff;
+            color: #ffffff;
             margin: 0;
             padding: 0;
             display: flex;
@@ -17,54 +17,59 @@
             align-items: center;
             height: 100vh;
             flex-direction: column;
-			flex-direction: width;
         }
-
+		
         /* Container for the calculator */
         .container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            background-color: #054272;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
             width: 100%;
             max-width: 1200px;
-            padding: 30px;
+            padding: 40px;
+			align-items:center;
+            border: 2px solid #fffaaa;
+          
+
         }
 
         h1 {
-            font-size: 32px;
+            font-size: 36px;
             text-align: center;
-            color: #003366;
-            margin-bottom: 20px;
+            color: #1e88e5;
+            margin-bottom: 30px;
+            font-weight: bold;
         }
 
         h2 {
-            font-size: 24px;
-            color: #003366;
-            margin-bottom: 10px;
-            text-align: left;
+            font-size: 26px;
+            color: #e3e3e3;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
         }
 
         /* Styling for labels */
         label {
-            font-size: 16px;
-            color: #333;
+            font-size: 18px;
+            color: #e3e3e3;
         }
 
         button {
-            padding: 12px 20px;
-            background-color: #003366;
+            padding: 14px 24px;
+            background-color: #1e88e5;
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            border-radius: 8px;
+            font-size: 18px;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 15px;
             transition: background-color 0.3s ease;
             width: 100%;
         }
 
         button:hover {
-            background-color: #87CEEB;
+            background-color: #1565c0;
         }
 
         /* Flexbox layout for schemes */
@@ -77,77 +82,79 @@
         .scheme {
             width: 48%;
             padding: 20px;
-            background-color: #fff;
+            background-color: #073763;
             border-radius: 8px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
             display: none; /* Initially hide all schemes */
         }
 
         .divider {
             width: 2px;
-            background-color: #333;
+            background-color: #1e88e5;
             margin: 0 20px;
-			
         }
 
         /* Result section styles */
         .result {
-            background-color: #f9f9f9;
+            background-color: #e0e0e0;
             border-radius: 5px;
-            padding: 15px;
+            padding: 20px;
             margin-top: 20px;
-            font-size: 16px;
+            font-size: 18px;
             line-height: 1.6;
-            color: #333;
+            color: #252525;
         }
 
         .result strong {
-            color: #003366;
+            color: #1e88e5;
         }
 
         /* Input field styles */
         input {
             width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 14px;
+            margin: 15px 0;
+            border: 3px solid #d7edff;
+            border-radius: 8px;
+            font-size: 18px;
             box-sizing: border-box;
+            background-color: #d7edff;
+            color: black;
         }
 
         /* Dropdown button */
         select {
-            padding: 12px;
-            font-size: 16px;
-            margin-bottom: 20px;
+            padding: 14px;
+            font-size: 18px;
+            margin-bottom: 25px;
             width: 100%;
-            border-radius: 5px;
-            border: 1px solid #ddd;
+            border-radius: 8px;
+            border: 3px solid #d7edff;
+            background-color: #054272;
+            color: white;
         }
 
         /* Responsive design for smaller screens */
         @media (max-width: 768px) {
             .container {
-                padding: 20px;
+                padding: 30px;
             }
 
             h1 {
-                font-size: 28px;
+                font-size: 32px;
             }
 
             h2 {
-                font-size: 22px;
+                font-size: 24px;
             }
 
             button {
-                font-size: 14px;
-                padding: 10px;
+                font-size: 16px;
+                padding: 12px;
             }
 
             .row {
                 flex-direction: column;
-				flex-direction: width;
                 align-items: center;
             }
 
@@ -164,8 +171,12 @@
 </head>
 <body>
 
+
+
+
+
 <div class="container">
-    <h1>Scheme Calculator</h1>
+    <h1>CSTools</h1>
 
     <!-- Dropdown to select scheme -->
     <select id="schemeSelect" onchange="showScheme()">
@@ -173,9 +184,13 @@
         <option value="scheme2">Scheme 2: In excess of 10,000 OP Limit 80/20</option>
         <option value="scheme3">Scheme 3: 5000 Excess 50/50</option>
         <option value="scheme4">Scheme 4: 2000 Excess 70/30</option>
+		<option value="scheme5">Scheme 5: 5000 Excess 70/30</option>
+        <option value="miscellaneousNonVehi">NON VEHI MISCELLANEOUS</option>
+        <option value="miscellaneousVehi">VEHI NON-COVERABLE</option>
+		<option value="ruvFinder">RUV FINDER (UNDER CONSTRUCTION)</option>
     </select>
 
-    <!-- Row for schemes -->
+    <!-- Scheme sections -->
     <div class="scheme" id="scheme1">
         <h2>Scheme 1: 7500 Per Procedure in Excess 70/30</h2>
         <label for="amount1"><b>Enter the Procedure Amount:</b> <i> Example: MRI 15,000</i> </label>
@@ -210,10 +225,175 @@
         <div id="scheme4Result" class="result"></div>
         <button class="copy-button" onclick="copyResult('scheme4Result')">Copy Result</button>
     </div>
-</div>
+	
+	 <div class="scheme" id="scheme5">
+        <h2>Scheme 5: 5000 Excess 70/30</h2>
+        <label for="amount4"><b> Enter the Procedure Amount:</b> <i> Procedure1 3,000</i> </label>
+        <input type="number" id="amount4" placeholder="Enter the Procedure Amount" oninput="calculateExcess5()">
+        <div id="scheme5Result" class="result"></div>
+        <button class="copy-button" onclick="copyResult('scheme5Result')">Copy Result</button>
+    </div>
+
+    <!-- Miscellaneous Section for NonVehi -->
+    <div class="scheme" id="miscellaneousNonVehi">
+        <h2>NON VEHI MISCELLANEOUS</h2>
+        <label for="NonVehiitemInput"><b>Enter Item Name:</b> </label>
+        <input type="text" id="NonVehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
+        <div id="NonVehiItems" class="result"></div>
+    </div>
+
+    <!-- Miscellaneous Section for Vehi -->
+    <div class="scheme" id="miscellaneousVehi">
+        <h2>VEHI NON-COVERABLE</h2>
+        <label for="VehiitemInput"><b>Enter Item Name:</b> </label>
+        <input type="text" id="VehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
+        <div id="VehiItems" class="result"></div>
+    </div>
+	
+	<!-- RUV FINDER Section for RUV -->
+    <div class="scheme" id="ruvFinder">
+        <h2>RUV FINDER * UNDER CONSTRUCTION</h2>
+        <label for="unitData"><b>Enter the RVS Code:</b> </label>
+        <input type="number" id="unitNumber" placeholder="Enter number here">
+		<button onclick="getUnitDescription()">Get Description</button>
+        
+		<div id="result" class="result" style="display:none;">
+        <p><strong>Description:</strong> <span id="description"></span></p>
+        <p><strong>Unit:</strong> <span id="unit"></span></p>
+        <p><strong>Category:</strong> <span id="category"></span></p>
+        <p><strong>Sub-Category:</strong> <span id="subCategory"></span></p>
+   
+    </div>
+
 
 <script>
-    // Function to copy the result of each scheme
+const unitData = 
+{
+        10060: {
+        description: 'Incision and drainage of abscess (e.g., carbuncle, suppurative hidradenitis, cutaneous or subcutaneous abscess, cyst, furuncle, or paronychia)',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Incision and Drainage'
+    },
+    10080: {
+        description: 'Incision and drainage of pilonidal cyst',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Incision and Drainage'
+    },
+    10120: {
+        description: 'Incision and removal of foreign body, subcutaneous tissues (FB)',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Incision and Drainage'
+    },
+    10140: {
+        description: 'Incision and drainage of hematoma, seroma, or fluid collection',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Incision and Drainage'
+    },
+    10160: {
+        description: 'Puncture aspiration of abscess, hematoma, bulla, or cyst',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Incision and Drainage'
+    },
+    10180: {
+        description: 'Incision and drainage, complex, postoperative wound infection',
+        unit: 15,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Incision and Drainage'
+    },
+    11000: {
+        description: 'Debridement of extensive eczematous or infected skin',
+        unit: 60,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11010: {
+        description: 'Debridement including removal of foreign material associated with open fracture(s) and/or dislocation(s); skin and subcutaneous tissues',
+        unit: 60,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11011: {
+        description: 'Debridement of skin, subcutaneous tissue, muscle fascia, and muscle',
+        unit: 70,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11012: {
+        description: 'Debridement; 2.6 cm to 5.0 cm',
+        unit: 20,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11040: {
+        description: 'Debridement; skin, partial thickness',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11041: {
+        description: 'Debridement; skin, full thickness',
+        unit: 10,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11042: {
+        description: 'Debridement; skin and subcutaneous tissue',
+        unit: 20,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    },
+    11043: {
+        description: 'Debridement; skin, subcutaneous tissue, and muscle',
+        unit: 30,
+        category: 'Skin, Subcutaneous and Accessory Structures',
+        subCategory: 'Excision-Debridement'
+    }
+			
+			
+			
+			};
+			
+			function getUnitDescription() {
+            const unitNumber = document.getElementById('unitNumber').value;
+            const resultDiv = document.getElementById('result');
+            const descriptionSpan = document.getElementById('description');
+            const unitSpan = document.getElementById('unit');
+            const categorySpan = document.getElementById('category');
+            const subCategorySpan = document.getElementById('subCategory');
+            
+            if (unitData[unitNumber]) {
+                const unitInfo = unitData[unitNumber];
+                descriptionSpan.textContent = unitInfo.description;
+                unitSpan.textContent = unitInfo.unit;
+                categorySpan.textContent = unitInfo.category;
+                subCategorySpan.textContent = unitInfo.subCategory;
+                resultDiv.style.display = 'block';
+            } else {
+                alert('No data found for this number.');
+                resultDiv.style.display = 'none';
+            }
+        }
+
+        // Add event listener for Enter key
+        document.getElementById('unitNumber').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();  // Prevent form submission or other default behavior
+                getUnitDescription();
+            }
+        });
+
+
+
+
+
+
+	
+// Function to copy the result of each scheme
     function copyResult(schemeId) {
         const resultText = document.getElementById(schemeId).innerText;
         navigator.clipboard.writeText(resultText)
@@ -327,9 +507,160 @@
             <strong>Remaining (30% of Excess):</strong> ${excess30.toFixed(2)}<br>
             <strong>Total Covered:</strong> ${totalCovered.toFixed(2)}
         `;
+		
+		}
+		
+		  // Scheme 5 Calculation (5000 Excess 70/30)
+    function calculateExcess5() {
+        const amount4 = parseFloat(document.getElementById("amount4").value);
+        let excess = 0;
+        let excess70 = 0;
+        let excess30 = 0;
+        let totalCovered = 0;
+
+        if (amount4 > 5000) {
+            excess = amount4 - 5000;
+            excess70 = excess * 0.70;
+            excess30 = excess * 0.30;
+            totalCovered = 5000 + excess70;
+        }
+
+        document.getElementById("scheme5Result").innerHTML = `
+            <strong>Excess:</strong> ${excess.toFixed(2)}<br>
+            <strong>70% of Excess:</strong> ${excess70.toFixed(2)}<br>
+            <strong>Remaining (30% of Excess):</strong> ${excess30.toFixed(2)}<br>
+            <strong>Total Covered:</strong> ${totalCovered.toFixed(2)}
+        `;
+		
+		}
+    // Sample items for NON VEHI and VEHI
+    const nonVehiItems = [
+        "2D Echo & With Doppler For Less 20 Yo (HF Not Equipped) Not Covered",
+        "Abdominal Binder Not Covered",
+        "ACL Tear Covered, Can Be Attributed To Other Activities",
+        "Admission Kit Covered",
+        "Alcohol Covered",
+        "Aminost Sterile (For Newborn) Covered",
+        "Armsling Covered",
+        "Baby Powder Not Covered",
+        "Bactidol / Difflam (If Not Related To Case/Dx) Covered",
+        "Band Aid Covered",
+        "Bedpan Covered",
+        "Bilirubin For Baby Less 1 Yo (HF Not Equipped) Not Covered",
+        "Birth Certificate Not Covered",
+        "Blood Screening (Donor) Not Covered",
+        "Blood Typing - OPD Covered",
+        "Breast Pump Not Covered",
+        "Calibrated Glass Not Covered",
+        "Cervical Collar Covered",
+        "Cherry Balls Covered",
+        "Cologne Not Covered",
+        "Comfort Kit Covered",
+        "Commode Not Covered",
+        "Congenital Cases Not Covered",
+        "Cotton Absorbent / Balls Covered",
+        "Cotton Applicator Sterile Covered",
+        "Cotton Pledget Covered",
+        "Cotton Swab Covered",
+        "Courier/ Mailing Expenses Covered",
+        "Diaper Not Covered",
+        "Dietary Counselling Covered",
+        "Dipper Not Covered",
+        "Disapproved Charges On ER Cases Only No Disapproved Charges For ER",
+        "Disposable Razor/ Shaving Kit For OR Only, Covered",
+        "Drinking Water Not Covered",
+        "Dry Sheet/ Linen Not Covered",
+        "Duphaston Covered As Treatment For Threatened Abortion If With Maternity Coverage, Covered",
+        "Duphaston Covered For AUB If With Maternity Coverage, Covered",
+        "Electricity Charges Not Covered",
+        "Epidural Set - NSD Not Covered",
+        "Extra Bed Not Covered",
+        "Extra Meal/ Dietary Not Covered",
+        "Face Towel Not Covered",
+        "Fax Charges Covered",
+        "Feeding Bottle Not Covered",
+        "Feeding Cup Not Covered",
+        "Fiberglass Cast Covered",
+        "Fracture During The Treatment Covered",
+        "Freezer for Use Covered",
+        "Gloves Covered",
+        "Gown (Not For Day Care Or OPD Procedures) Covered"
+    ];
+
+    const vehiItems = [
+                "Abdominal Binder Not Covered",
+        "Admission Fee Not Covered",
+        "Admission Kit Not Covered",
+        "Alcohol (Bottle) Not Covered",
+        "Ambulance Service Included In Special Hospital Services Limit / Separate Inner Limit",
+        "Antigen Test Not Covered",
+        "Arm Splint/Splint Not Covered",
+        "Assistant Fee (Surgeon's Asst) To Be Added To Surgeon's Fee Under Surgical Benefit",
+        "Bedpan Not Covered",
+        "Bedsheet Not Covered",
+        "Blood Not Covered / Only Covered For VehI And DOST",
+        "Blood Typing Not Covered",
+        "Calibrated Glass Not Covered",
+        "Cane Not Covered",
+        "Cotton Balls Covered",
+        "Crutches Not Covered",
+        "Diaper Not Covered",
+        "Dietary Services Not Covered",
+        "Disposable Gloves Covered",
+        "Dri Sheet Not Covered",
+        "Elastic Bandage Not Covered",
+        "Environmental Fee Not Covered",
+        "Er Fee Covered (For VehI Only For Emergency Case)",
+        "Er Supplies Covered",
+        "Estra Linen/Pillow/Toilet Paper/Tissue Not Covered",
+        "Extra Bed/Room Not Covered",
+        "Extra Meals Not Covered",
+        "Face Mask/Aerosol Mask Not Covered",
+        "Glass With Hospital Logo Not Covered",
+        "Gown Set Not Covered"
+    ];
+
+    // Function to filter and display autocomplete items
+    function autoCompleteItem(inputId, resultId) {
+        const input = document.getElementById(inputId).value.toLowerCase();
+        const resultDiv = document.getElementById(resultId);
+        
+        // If input is empty, clear the result
+        if (input === "") {
+            resultDiv.innerHTML = "";
+            return; // Exit the function
+        }
+        
+        const items = inputId === 'NonVehiitemInput' ? nonVehiItems : vehiItems;
+        const filteredItems = items.filter(item => item.toLowerCase().includes(input));
+        
+        // Clear previous results
+        resultDiv.innerHTML = '';
+        
+        // Display filtered results
+        filteredItems.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item;
+            resultDiv.appendChild(div);
+        });
     }
 
-    // Initialize the page by showing the first scheme by default
+    // Function to show selected scheme
+    function showScheme() {
+        const scheme = document.getElementById('schemeSelect').value;
+        const schemes = document.querySelectorAll('.scheme');
+        
+        schemes.forEach(schemeDiv => {
+            schemeDiv.style.display = 'none'; // Hide all schemes
+        });
+
+        const selectedScheme = document.getElementById(scheme);
+        if (selectedScheme) {
+            selectedScheme.style.display = 'block'; // Show selected scheme
+        }
+    }
+
+    // Initial call to display selected scheme
     showScheme();
 </script>
 
