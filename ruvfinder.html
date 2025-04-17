@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>RUV FINDER</title>
   <style>
     body {
@@ -11,23 +11,41 @@
       color: #fff;
       margin: 0;
       padding: 0;
+      height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
     }
-    .container {
+
+    .main-container {
+      display: flex;
+      gap: 2rem;
+      padding: 2rem;
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 20px;
+    }
+
+    .container, .calculator {
       background-color: #1c2b3a;
       border-radius: 16px;
       padding: 2rem;
       box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
+    }
+
+    .container {
       width: 400px;
     }
-    h1 {
+
+    .calculator {
+      width: 280px;
+    }
+
+    h1, h2 {
       text-align: center;
       color: #4facfe;
       margin-bottom: 1rem;
     }
+
     input[type="text"] {
       width: 100%;
       padding: 10px;
@@ -36,6 +54,7 @@
       border: none;
       border-radius: 8px;
     }
+
     button {
       width: 100%;
       padding: 10px;
@@ -47,31 +66,60 @@
       transition: background 0.3s;
       margin-bottom: 1rem;
     }
+
     button:hover {
       background: #00f2fe;
     }
-    .result {
+
+    .result, .calc-result {
       margin-top: 1.5rem;
       background-color: #0d1b2a;
       border-radius: 8px;
       padding: 1rem;
     }
-    .result p {
-      margin: 0.5rem 0;
+
+    .calc-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
+
+    .calc-buttons button {
+      font-size: 1rem;
+      background: #1e90ff;
+    }
+
+    .calc-buttons button:hover {
+      background: #00bcd4;
+    }
+
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>RUV FINDER</h1>
-    <input type="text" id="codeInput" placeholder="Enter rvs code..." />
-    <button onclick="searchCode()">Search</button>
-    <button onclick="window.location.href='index.html'">Go to Home Page</button>
-    <div class="result" id="result"></div>
+  <div class="main-container">
+    <div class="container">
+      <h1>RUV FINDER</h1>
+      <input type="text" id="codeInput" placeholder="Enter rvs code..." />
+      <button onclick="searchCode()">Search</button>
+      <button onclick="window.location.href='index.html'">Go to Home Page</button>
+      <div class="result" id="result"></div>
+    </div>
+
+    <div class="calculator">
+      <h2>Unit Multiplier</h2>
+      <div class="calc-buttons">
+        <button onclick="multiplyUnit(140)">× 140</button>
+        <button onclick="multiplyUnit(145)">× 145</button>
+        <button onclick="multiplyUnit(150)">× 150</button>
+        <button onclick="multiplyUnit(155)">× 155</button>
+      </div>
+      <div class="calc-result" id="calcResult"></div>
+    </div>
   </div>
 
   <script>
     let data = {};
+    let currentUnit = null;
 
     async function loadData() {
       try {
@@ -85,8 +133,13 @@
     function searchCode() {
       const code = document.getElementById("codeInput").value.trim();
       const resultDiv = document.getElementById("result");
+      const calcResultDiv = document.getElementById("calcResult");
+      calcResultDiv.innerHTML = '';
+      currentUnit = null;
+
       if (data[code]) {
         const item = data[code];
+        currentUnit = parseFloat(item.unit);
         resultDiv.innerHTML = `
           <p><strong>Description:</strong> ${item.description}</p>
           <p><strong>Unit:</strong> ${item.unit}</p>
@@ -95,6 +148,16 @@
         `;
       } else {
         resultDiv.innerHTML = '<p>No data found for this code.</p>';
+      }
+    }
+
+    function multiplyUnit(multiplier) {
+      const calcResultDiv = document.getElementById("calcResult");
+      if (currentUnit !== null) {
+        const result = currentUnit * multiplier;
+        calcResultDiv.innerHTML = `<p><strong>${currentUnit} × ${multiplier} = ${result.toFixed(2)}</strong></p>`;
+      } else {
+        calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
       }
     }
 
