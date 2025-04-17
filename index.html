@@ -85,7 +85,7 @@
 </head>
 <body>
 
-  <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
+  <a href="index.html" class="nav-button">Go to RUV FINDER</a>
 
   <div class="container">
     <h1>CSTools (Restyled)</h1>
@@ -96,6 +96,8 @@
       <option value="scheme3">Scheme 3: 5000 Excess 50/50</option>
       <option value="scheme4">Scheme 4: 2000 Excess 70/30</option>
       <option value="scheme5">Scheme 5: 5000 Excess 70/30</option>
+      <option value="miscellaneousNonVehi">NON VEHI MISCELLANEOUS</option>
+      <option value="miscellaneousVehi">VEHI NON-COVERABLE</option>
     </select>
 
     <div class="scheme" id="scheme1">
@@ -133,6 +135,22 @@
       <div id="scheme5Result" class="result"></div>
       <button onclick="copyResult('scheme5Result')">Copy Result</button>
     </div>
+
+    <!-- Miscellaneous Section for NonVehi -->
+    <div class="scheme" id="miscellaneousNonVehi">
+      <h2>NON VEHI MISCELLANEOUS</h2>
+      <label for="NonVehiitemInput"><b>Enter Item Name:</b> </label>
+      <input type="text" id="NonVehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
+      <div id="NonVehiItems" class="result"></div>
+  </div>
+
+  <!-- Miscellaneous Section for Vehi -->
+  <div class="scheme" id="miscellaneousVehi">
+      <h2>VEHI NON-COVERABLE</h2>
+      <label for="VehiitemInput"><b>Enter Item Name:</b> </label>
+      <input type="text" id="VehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
+      <div id="VehiItems" class="result"></div>
+  </div>
   </div>
 
   <script>
@@ -207,7 +225,117 @@
         <strong>Total Covered:</strong> ${covered.toFixed(2)}
       `;
     }
+    // Sample items for NON VEHI and VEHI
+    const nonVehiItems = [
+        "2D Echo & With Doppler For Less 20 Yo (HF Not Equipped) Not Covered",
+        "Abdominal Binder Not Covered",
+        "ACL Tear Covered, Can Be Attributed To Other Activities",
+        "Admission Kit Covered",
+        "Alcohol Covered",
+        "Aminost Sterile (For Newborn) Covered",
+        "Armsling Covered",
+        "Baby Powder Not Covered",
+        "Bactidol / Difflam (If Not Related To Case/Dx) Covered",
+        "Band Aid Covered",
+        "Bedpan Covered",
+        "Bilirubin For Baby Less 1 Yo (HF Not Equipped) Not Covered",
+        "Birth Certificate Not Covered",
+        "Blood Screening (Donor) Not Covered",
+        "Blood Typing - OPD Covered",
+        "Breast Pump Not Covered",
+        "Calibrated Glass Not Covered",
+        "Cervical Collar Covered",
+        "Cherry Balls Covered",
+        "Cologne Not Covered",
+        "Comfort Kit Covered",
+        "Commode Not Covered",
+        "Congenital Cases Not Covered",
+        "Cotton Absorbent / Balls Covered",
+        "Cotton Applicator Sterile Covered",
+        "Cotton Pledget Covered",
+        "Cotton Swab Covered",
+        "Courier/ Mailing Expenses Covered",
+        "Diaper Not Covered",
+        "Dietary Counselling Covered",
+        "Dipper Not Covered",
+        "Disapproved Charges On ER Cases Only No Disapproved Charges For ER",
+        "Disposable Razor/ Shaving Kit For OR Only, Covered",
+        "Drinking Water Not Covered",
+        "Dry Sheet/ Linen Not Covered",
+        "Duphaston Covered As Treatment For Threatened Abortion If With Maternity Coverage, Covered",
+        "Duphaston Covered For AUB If With Maternity Coverage, Covered",
+        "Electricity Charges Not Covered",
+        "Epidural Set - NSD Not Covered",
+        "Extra Bed Not Covered",
+        "Extra Meal/ Dietary Not Covered",
+        "Face Towel Not Covered",
+        "Fax Charges Covered",
+        "Feeding Bottle Not Covered",
+        "Feeding Cup Not Covered",
+        "Fiberglass Cast Covered",
+        "Fracture During The Treatment Covered",
+        "Freezer for Use Covered",
+        "Gloves Covered",
+        "Gown (Not For Day Care Or OPD Procedures) Covered"
+    ];
 
+    const vehiItems = [
+                "Abdominal Binder Not Covered",
+        "Admission Fee Not Covered",
+        "Admission Kit Not Covered",
+        "Alcohol (Bottle) Not Covered",
+        "Ambulance Service Included In Special Hospital Services Limit / Separate Inner Limit",
+        "Antigen Test Not Covered",
+        "Arm Splint/Splint Not Covered",
+        "Assistant Fee (Surgeon's Asst) To Be Added To Surgeon's Fee Under Surgical Benefit",
+        "Bedpan Not Covered",
+        "Bedsheet Not Covered",
+        "Blood Not Covered / Only Covered For VehI And DOST",
+        "Blood Typing Not Covered",
+        "Calibrated Glass Not Covered",
+        "Cane Not Covered",
+        "Cotton Balls Covered",
+        "Crutches Not Covered",
+        "Diaper Not Covered",
+        "Dietary Services Not Covered",
+        "Disposable Gloves Covered",
+        "Dri Sheet Not Covered",
+        "Elastic Bandage Not Covered",
+        "Environmental Fee Not Covered",
+        "Er Fee Covered (For VehI Only For Emergency Case)",
+        "Er Supplies Covered",
+        "Estra Linen/Pillow/Toilet Paper/Tissue Not Covered",
+        "Extra Bed/Room Not Covered",
+        "Extra Meals Not Covered",
+        "Face Mask/Aerosol Mask Not Covered",
+        "Glass With Hospital Logo Not Covered",
+        "Gown Set Not Covered"
+    ];
+
+    // Function to filter and display autocomplete items
+    function autoCompleteItem(inputId, resultId) {
+        const input = document.getElementById(inputId).value.toLowerCase();
+        const resultDiv = document.getElementById(resultId);
+        
+        // If input is empty, clear the result
+        if (input === "") {
+            resultDiv.innerHTML = "";
+            return; // Exit the function
+        }
+        
+        const items = inputId === 'NonVehiitemInput' ? nonVehiItems : vehiItems;
+        const filteredItems = items.filter(item => item.toLowerCase().includes(input));
+        
+        // Clear previous results
+        resultDiv.innerHTML = '';
+        
+        // Display filtered results
+        filteredItems.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item;
+            resultDiv.appendChild(div);
+        });
+    }
     showScheme();
   </script>
 
