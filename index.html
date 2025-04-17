@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Code Lookup</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .container {
+      background-color: #1c2b3a;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
+      width: 400px;
+    }
+    h1 {
+      text-align: center;
+      color: #4facfe;
+      margin-bottom: 1rem;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      background: #4facfe;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-bottom: 1rem;
+    }
+    button:hover {
+      background: #00f2fe;
+    }
+    .result {
+      margin-top: 1.5rem;
+      background-color: #0d1b2a;
+      border-radius: 8px;
+      padding: 1rem;
+    }
+    .result p {
+      margin: 0.5rem 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Code Lookup</h1>
+    <input type="text" id="codeInput" placeholder="Enter code..." />
+    <button onclick="searchCode()">Search</button>
+    <button onclick="window.location.href='main.html'">Go to Scheme Calculator</button>
+    <div class="result" id="result"></div>
+  </div>
+
+  <script>
+    let data = {};
+
+    async function loadData() {
+      try {
+        const response = await fetch('data.json');
+        data = await response.json();
+      } catch (error) {
+        document.getElementById("result").innerHTML = '<p>Error loading data.</p>';
+      }
+    }
+
+    function searchCode() {
+      const code = document.getElementById("codeInput").value.trim();
+      const resultDiv = document.getElementById("result");
+      if (data[code]) {
+        const item = data[code];
+        resultDiv.innerHTML = `
+          <p><strong>Description:</strong> ${item.description}</p>
+          <p><strong>Unit:</strong> ${item.unit}</p>
+          <p><strong>Category:</strong> ${item.category}</p>
+          <p><strong>Subcategory:</strong> ${item.subCategory}</p>
+        `;
+      } else {
+        resultDiv.innerHTML = '<p>No data found for this code.</p>';
+      }
+    }
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
