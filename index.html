@@ -172,7 +172,7 @@
       document.getElementById("scheme1Result").innerHTML = `
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>70% of Excess:</strong> ${(excess * 0.7).toFixed(2)}<br>
-        <strong>30% (Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
+        <strong>30% (c/o Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
         <strong>Total Covered (7500 Limit + 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
@@ -185,7 +185,7 @@
         document.getElementById("scheme2Result").innerHTML = `
           <strong>Excess:</strong> ${excess.toFixed(2)}<br>
           <strong>80% of Excess:</strong> ${(excess * 0.8).toFixed(2)}<br>
-          <strong>20% (Patient):</strong> ${(excess * 0.2).toFixed(2)}<br>
+          <strong>20% (c/o Patient):</strong> ${(excess * 0.2).toFixed(2)}<br>
           <strong>Total Covered(Remaining Limit + 80% of Excess):</strong> ${(limit + excess * 0.8).toFixed(2)}
         `;
       }
@@ -209,7 +209,7 @@
       document.getElementById("scheme4Result").innerHTML = `
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>70% of Excess:</strong> ${(excess * 0.7).toFixed(2)}<br>
-        <strong>30% (Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
+        <strong>30% (c/o Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
         <strong>Total Covered (2000 Limit plus 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
@@ -221,7 +221,7 @@
       document.getElementById("scheme5Result").innerHTML = `
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>70% of Excess:</strong> ${(excess * 0.7).toFixed(2)}<br>
-        <strong>30% (Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
+        <strong>30% (c/o Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
         <strong>Total Covered (5000 Limit plus 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
