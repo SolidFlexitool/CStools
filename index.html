@@ -173,7 +173,7 @@
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>70% of Excess:</strong> ${(excess * 0.7).toFixed(2)}<br>
         <strong>30% (Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
-        <strong>Total Covered:</strong> ${covered.toFixed(2)}
+        <strong>Total Covered (7500 Limit + 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
 
@@ -186,7 +186,7 @@
           <strong>Excess:</strong> ${excess.toFixed(2)}<br>
           <strong>80% of Excess:</strong> ${(excess * 0.8).toFixed(2)}<br>
           <strong>20% (Patient):</strong> ${(excess * 0.2).toFixed(2)}<br>
-          <strong>Total Covered:</strong> ${(limit + excess * 0.8).toFixed(2)}
+          <strong>Total Covered(Remaining Limit + 80% of Excess):</strong> ${(limit + excess * 0.8).toFixed(2)}
         `;
       }
     }
@@ -198,7 +198,7 @@
       document.getElementById("scheme3Result").innerHTML = `
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>50% Share:</strong> ${(excess * 0.5).toFixed(2)}<br>
-        <strong>Total Covered:</strong> ${covered.toFixed(2)}
+        <strong>Total Covered (5000 Limit plus 50% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
 
@@ -210,7 +210,7 @@
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>70% of Excess:</strong> ${(excess * 0.7).toFixed(2)}<br>
         <strong>30% (Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
-        <strong>Total Covered:</strong> ${covered.toFixed(2)}
+        <strong>Total Covered (2000 Limit plus 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
 
@@ -222,7 +222,7 @@
         <strong>Excess:</strong> ${excess.toFixed(2)}<br>
         <strong>70% of Excess:</strong> ${(excess * 0.7).toFixed(2)}<br>
         <strong>30% (Patient):</strong> ${(excess * 0.3).toFixed(2)}<br>
-        <strong>Total Covered:</strong> ${covered.toFixed(2)}
+        <strong>Total Covered (5000 Limit plus 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
     // Sample items for NON VEHI and VEHI
