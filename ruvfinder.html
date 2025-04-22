@@ -114,7 +114,6 @@
         <button onclick="multiplyUnit(155)">× 155</button>
       </div>
       <div class="calc-result" id="calcResult"></div>
-      <button onclick="copyCalcResult()">Copy Result</button>
     </div>
   </div>
 
@@ -137,18 +136,6 @@
       const calcResultDiv = document.getElementById("calcResult");
       calcResultDiv.innerHTML = '';
       currentUnit = null;
-    }
-      function copyCalcResult() {
-  const calcResultDiv = document.getElementById("calcResult");
-  const tempText = document.createElement("textarea");
-  tempText.value = calcResultDiv.textContent;
-  document.body.appendChild(tempText);
-  tempText.select();
-  document.execCommand("copy");
-  document.body.removeChild(tempText);
-  alert("Result copied to clipboard!");
-}
-
 
       if (data[code]) {
         const item = data[code];
