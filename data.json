@@ -22690,5 +22690,12 @@
     "unit": 0,
     "category": "Severe Acute Respiratory Syndrome (SARS)/Avian Influenza (Bird Flu)",
     "subCategory": "nan"
+
+    },
+  "52310": {
+    "description": "Cystourethroscopy, w/ removal of foreign body, calculus, or ureteral stent from urethra or bladder",
+    "unit": 60,
+    "category": "Transurethral Surgery Urethra and Bladder",
+    "subCategory": "nan"
   }
 }
