@@ -87,10 +87,29 @@
 
 <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
 
-  <!-- Logo above CSTools -->
-  <div style="text-align: center; margin-bottom: 1rem;">
-    <img src="your-logo.png" alt="CSTools Logo" width="220" style="border-radius: 12px;">
-  </div>
+<!-- Logo above CSTools -->
+<div style="text-align: center; margin-bottom: 1rem;">
+  <img src="your-logo.png" alt="CSTools Logo" class="glow-logo">
+</div>
+
+<style>
+  .glow-logo {
+    width: 220px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #4facfe, 0 0 40px #00f2fe, 0 0 60px #4facfe;
+    animation: glow 2s infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px #4facfe, 0 0 20px #00f2fe, 0 0 30px #4facfe;
+    }
+    to {
+      box-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe, 0 0 60px #00f2fe;
+    }
+  }
+</style>
+
 
   <div class="container">
     <h1>CSTools</h1>
@@ -494,6 +513,7 @@
 
 </body>
 </html>
+
 
 
 
