@@ -15,6 +15,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+      flex-direction: column;
     }
 
     .main-container {
@@ -55,7 +56,8 @@
       border-radius: 8px;
     }
 
-    button {
+    button, .nav-button {
+      display: inline-block;
       width: 100%;
       padding: 10px;
       font-size: 1rem;
@@ -63,11 +65,14 @@
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      text-align: center;
+      color: white;
+      text-decoration: none;
       transition: background 0.3s;
       margin-bottom: 1rem;
     }
 
-    button:hover {
+    button:hover, .nav-button:hover {
       background: #00f2fe;
     }
 
@@ -92,28 +97,25 @@
     .calc-buttons button:hover {
       background: #00bcd4;
     }
-
   </style>
 </head>
 <body>
 
-<a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
+  <!-- Home Button -->
+  <a href="index.html" class="nav-button" style="max-width: 200px;">Go to Home Page</a>
 
-  <!-- Logo above CSTools -->
-  <div style="display: flex; flex-direction: column; align-items: center; width: 100%; padding-top: 2rem;">
-    
-    <!-- Logo on top -->
-    <div style="text-align: center; margin-bottom: 1.5rem;">
-      <img src="your-logo.png" alt="RUV Finder Logo" 
-           style="width: 220px; max-width: 100%; border-radius: 12px; box-shadow: 0 0 20px rgba(79,172,254,0.6);">
-    </div>
+  <!-- Logo -->
+  <div style="text-align: center; margin: 1rem 0;">
+    <img src="your-logo.png" alt="RUV Finder Logo" 
+         style="width: 220px; max-width: 100%; border-radius: 12px; box-shadow: 0 0 20px rgba(79,172,254,0.6);">
+  </div>
 
+  <!-- Main App -->
   <div class="main-container">
     <div class="container">
       <h1>RUV FINDER</h1>
       <input type="text" id="codeInput" placeholder="Enter rvs code..." />
       <button onclick="searchCode()">Search</button>
-      <button onclick="window.location.href='index.html'">Go to Home Page</button>
       <div class="result" id="result"></div>
     </div>
 
