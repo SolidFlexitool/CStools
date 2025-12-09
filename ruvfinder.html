@@ -24,6 +24,9 @@
       padding: 2rem;
       background-color: rgba(0,0,0,0.2);
       border-radius: 20px;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
     }
 
     .container, .calculator {
@@ -31,35 +34,42 @@
       border-radius: 16px;
       padding: 2rem;
       box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
     }
 
     .container {
       width: 400px;
+      max-width: 90vw;
     }
 
     .calculator {
       width: 280px;
+      max-width: 90vw;
     }
 
     h1, h2 {
       text-align: center;
       color: #4facfe;
       margin-bottom: 1rem;
+      font-weight: 600;
     }
 
     input[type="text"] {
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       font-size: 1rem;
       margin-bottom: 1rem;
       border: none;
       border-radius: 8px;
+      box-sizing: border-box;
     }
 
     button, .nav-button {
       display: inline-block;
       width: 100%;
-      padding: 10px;
+      padding: 12px;
       font-size: 1rem;
       background: #4facfe;
       border: none;
@@ -68,12 +78,14 @@
       text-align: center;
       color: white;
       text-decoration: none;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.2s;
       margin-bottom: 1rem;
+      font-weight: 500;
     }
 
     button:hover, .nav-button:hover {
       background: #00f2fe;
+      transform: translateY(-2px);
     }
 
     .result, .calc-result {
@@ -81,6 +93,8 @@
       background-color: #0d1b2a;
       border-radius: 8px;
       padding: 1rem;
+      flex-grow: 1;
+      overflow-y: auto;
     }
 
     .calc-buttons {
@@ -92,10 +106,12 @@
     .calc-buttons button {
       font-size: 1rem;
       background: #1e90ff;
+      transition: background 0.3s, transform 0.2s;
     }
 
     .calc-buttons button:hover {
       background: #00bcd4;
+      transform: translateY(-1px);
     }
 
     .nav-container {
@@ -103,19 +119,65 @@
       gap: 1rem;
       justify-content: center;
       margin-bottom: 1rem;
+      flex-wrap: wrap;
     }
 
     .nav-container .nav-button {
       width: auto;
       min-width: 150px;
+      padding: 10px 20px;
+    }
+
+    /* Logo styling */
+    .logo-container {
+      text-align: center;
+      margin: 1rem 0;
+    }
+
+    .logo-container img {
+      width: 220px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(79,172,254,0.6);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .container, .calculator {
+        width: 100%;
+        max-width: 100%;
+      }
+      .nav-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .nav-container .nav-button {
+        min-width: 200px;
+      }
+    }
+
+    /* Accessibility improvements */
+    button:focus, .nav-button:focus, input:focus {
+      outline: 2px solid #4facfe;
+      outline-offset: 2px;
+    }
+
+    /* Better text formatting in results */
+    .result p, .calc-result p {
+      margin: 0.5rem 0;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body>
   <!-- Logo -->
-  <div style="text-align: center; margin: 1rem 0;">
-    <img src="your-logo.png" alt="RUV Finder Logo" 
-         style="width: 220px; max-width: 100%; border-radius: 12px; box-shadow: 0 0 20px rgba(79,172,254,0.6);">
+  <div class="logo-container">
+    <img src="your-logo.png" alt="RUV Finder Logo" />
   </div>
 
   <!-- Navigation Buttons -->
@@ -129,20 +191,21 @@
   <div class="main-container">
     <div class="container">
       <h1>RUV FINDER</h1>
-      <input type="text" id="codeInput" placeholder="Enter rvs code..." />
+      <label for="codeInput" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Enter RVS Code:</label>
+      <input type="text" id="codeInput" placeholder="Enter rvs code..." aria-describedby="result" />
       <button onclick="searchCode()">Search</button>
-      <div class="result" id="result"></div>
+      <div class="result" id="result" role="region" aria-live="polite"></div>
     </div>
 
     <div class="calculator">
       <h2>Unit Multiplier</h2>
       <div class="calc-buttons">
-        <button onclick="multiplyUnit(140)">Ward / Out-Patient- OR x 140 </button>
+        <button onclick="multiplyUnit(140)">Ward / Out-Patient- OR x 140</button>
         <button onclick="multiplyUnit(145)">Semi Private x 145</button>
         <button onclick="multiplyUnit(150)">Private x 150</button>
         <button onclick="multiplyUnit(155)">Suite x 155</button>
       </div>
-      <div class="calc-result" id="calcResult"></div>
+      <div class="calc-result" id="calcResult" role="region" aria-live="polite"></div>
     </div>
   </div>
 
