@@ -78,6 +78,23 @@
       padding: 1rem;
       color: #000;
       margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      position: relative;
+    }
+    .result-item {
+      padding: 5px 0;
+      cursor: pointer;
+      border-bottom: 1px solid #ccc;
+    }
+    .result-item:hover {
+      background-color: #f0f0f0;
+    }
+    .result-item mark {
+      background-color: #4facfe;
+      color: white;
+      padding: 2px 4px;
+      border-radius: 3px;
     }
     .result p strong {
       color: #1e88e5;
@@ -130,8 +147,8 @@
     <!-- Miscellaneous Section for NonVehi -->
     <div class="scheme" id="miscellaneousNonVehi">
       <h2>NON VEHI MISCELLANEOUS</h2>
-      <label for="NonVehiitemInput"><b>Enter Item Name:</b> </label>
-      <input type="text" id="NonVehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
+      <label for="NonVehiitemInput"><b>Enter Item Name or Keywords:</b> </label>
+      <input type="text" id="NonVehiitemInput" placeholder="Start typing keywords (e.g., blood opd)..." oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
       <div id="NonVehiItems" class="result"></div>
 
       
@@ -140,8 +157,8 @@
   <!-- Miscellaneous Section for Vehi -->
   <div class="scheme" id="miscellaneousVehi">
       <h2>VEHI NON-COVERABLE</h2>
-      <label for="VehiitemInput"><b>Enter Item Name:</b> </label>
-      <input type="text" id="VehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
+      <label for="VehiitemInput"><b>Enter Item Name or Keywords:</b> </label>
+      <input type="text" id="VehiitemInput" placeholder="Start typing keywords (e.g., blood typing)..." oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
       <div id="VehiItems" class="result"></div>
   </div>
   </div>
@@ -385,9 +402,19 @@
       document.getElementById('miscellaneousVehi').style.display = value === 'miscellaneousVehi' ? 'block' : 'none';
     }
 
-    // Function to filter and display autocomplete items
+    // Function to highlight keywords in text
+    function highlightKeywords(text, keywords) {
+      let highlighted = text;
+      keywords.forEach(keyword => {
+        const regex = new RegExp(`(${keyword})`, 'gi');
+        highlighted = highlighted.replace(regex, '<mark>$1</mark>');
+      });
+      return highlighted;
+    }
+
+    // Function to filter and display autocomplete items with keyword matching and highlighting
     function autoCompleteItem(inputId, resultId) {
-        const input = document.getElementById(inputId).value.toLowerCase();
+        const input = document.getElementById(inputId).value.trim();
         const resultDiv = document.getElementById(resultId);
         
         // If input is empty, clear the result
@@ -397,17 +424,27 @@
         }
         
         const items = inputId === 'NonVehiitemInput' ? nonVehiItems : vehiItems;
-        const filteredItems = items.filter(item => item.toLowerCase().includes(input));
+        const keywords = input.split(/\s+/).filter(k => k.length > 0);
+        
+        const filteredItems = items.filter(item => {
+            const itemLower = item.toLowerCase();
+            return keywords.every(keyword => itemLower.includes(keyword.toLowerCase()));
+        });
         
         // Clear previous results
         resultDiv.innerHTML = '';
         
-        // Display filtered results
-        filteredItems.forEach(item => {
-            const div = document.createElement('div');
-            div.textContent = item;
-            resultDiv.appendChild(div);
-        });
+        // Display filtered results with highlighting
+        if (filteredItems.length === 0) {
+            resultDiv.innerHTML = '<div class="result-item">No matching items found.</div>';
+        } else {
+            filteredItems.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'result-item';
+                div.innerHTML = highlightKeywords(item, keywords);
+                resultDiv.appendChild(div);
+            });
+        }
     }
 
     // Initialize the scheme display
