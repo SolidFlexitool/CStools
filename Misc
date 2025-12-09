@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> CSTools </title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #010048;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+    }
+    .nav-button {
+      display: inline-block;
+      background-color: #4facfe;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      text-align: center;
+      transition: background 0.3s ease;
+      margin-bottom: 1rem;
+    }
+    .nav-button:hover {
+      background-color: #00f2fe;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      background-color: #1c2b3a;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
+    }
+    h1, h2 {
+      text-align: center;
+      color: #4facfe;
+    }
+    select, input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 6px;
+      margin: 6px 0;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      background-color: #e0e0e0;
+      color: #000;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      background: #4facfe;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+      color: white;
+    }
+    button:hover {
+      background: #00f2fe;
+    }
+    .scheme {
+      display: none;
+      background-color: #0d1b2a;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .result {
+      background-color: #e0e0e0;
+      border-radius: 8px;
+      padding: 1rem;
+      color: #000;
+      margin-top: 10px;
+    }
+    .result p strong {
+      color: #1e88e5;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Logo above CSTools -->
+  <div style="text-align: center; margin-bottom: 1rem;">
+    <img src="your-logo.png" alt="CSTools Logo" width="120" style="border-radius: 12px;box-shadow: 0 0 20px rgba(79,172,254,0.6);"">
+  </div>
+
+<style>
+  .glow-logo {
+    width: 220px;
+    border-radius: 12px;
+    box-shadow: 0 0 20px #4facfe, 0 0 40px #00f2fe, 0 0 60px #4facfe;
+    animation: glow 2s infinite alternate;
+  }
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px #4facfe, 0 0 20px #00f2fe, 0 0 30px #4facfe;
+    }
+    to {
+      box-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe, 0 0 60px #00f2fe;
+    }
+  }
+</style>
+
+
+  <div class="container">
+    <h1>CSTools</h1>
+
+   <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
+   <a href="Misc.html" class="nav-button">Go to Miscellaneous</a>
+   <a href="Calc.html" class="nav-button">Go to Calculator</a>
+      
+      
+
+  <div class="container">
+
+    <select id="schemeSelect" onchange="showScheme()">
+      <option value="miscellaneousNonVehi">NON-VEHI MISCELLANEOUS</option>
+      <option value="miscellaneousVehi">UPDATED NON COVERABLE ITEMS (VEHI)</option>
+    </select>
+
+
+    <!-- Miscellaneous Section for NonVehi -->
+    <div class="scheme" id="miscellaneousNonVehi">
+      <h2>NON VEHI MISCELLANEOUS</h2>
+      <label for="NonVehiitemInput"><b>Enter Item Name:</b> </label>
+      <input type="text" id="NonVehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
+      <div id="NonVehiItems" class="result"></div>
+
+      
+  </div>
+
+  <!-- Miscellaneous Section for Vehi -->
+  <div class="scheme" id="miscellaneousVehi">
+      <h2>VEHI NON-COVERABLE</h2>
+      <label for="VehiitemInput"><b>Enter Item Name:</b> </label>
+      <input type="text" id="VehiitemInput" placeholder="Start typing the item name..." oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
+      <div id="VehiItems" class="result"></div>
+  </div>
+  </div>
+
+  <script>
+    // Sample items for NON VEHI and VEHI
+    const nonVehiItems = [
+"2D Echo & with Doppler for Less 20 yo (HF not equipped) Not Covered",
+"Abdominal Binder Not Covered",
+"ACL Tear Covered",
+"Admission Kit Covered",
+"Alcohol Covered",
+"Aminosterile (for newborn) Covered",
+"Armsling Covered",
+"Baby Powder Not Covered",
+"Bactidol / Difflam (if not related to case/DX) Covered",
+"Band Aid Covered",
+"Bedpan Covered",
+"Bilirubin for Baby less 1 yo. (HF not equipped) Not Covered",
+"Birth Certificate Not Covered",
+"Blood Screening (Donor) Not Covered",
+"Blood Typing - OPD Covered",
+"Breast Pump Not Covered",
+"Calibrated Glass Not Covered",
+"Cervical Collar Covered",
+"Cherry Balls Covered",
+"Cologne Not Covered",
+"Comfort Kit Covered",
+"Commode Not Covered",
+"Congenital Cases Not Covered",
+"Cotton Absorbent / Balls Covered",
+"Cotton Applicator Sterile Covered",
+"Cotton Pledget Covered",
+"Cotton Swab Covered",
+"Courier/ Mailing Expenses Covered",
+"Diaper Not Covered",
+"Dietary Counselling Covered",
+"Dipper Not Covered",
+"Disapproved Charges on ER Cases Only Not Covered",
+"Disposable Razor/ Shaving Kit Covered",
+"Drinking Water Not Covered",
+"Dry Sheet/ Linen Not Covered",
+"Duphaston Covered as Treatment for Threatened Abortion Covered",
+"Duphaston Covered for AUB Covered",
+"Electricity Charges Not Covered",
+"Epidural Set - NSD Not Covered",
+"Extra Bed Not Covered",
+"Extra Meal/ Dietary Not Covered",
+"Face Towel Not Covered",
+"Fax Charges Covered",
+"Feeding Bottle Not Covered",
+"Feeding Cup Not Covered",
+"Fiberglass Cast Covered",
+"Fracture During Sports Not Covered",
+"Hospice Bag Covered",
+"Hugs & Protect Mother & Baby Not Covered",
+"Hygienic Soap/ Wash Not Covered",
+"Ice Cap Not Covered",
+"ID Band/ Ward Tag Covered",
+"Infant Milk Formula Not Covered",
+"Insomia (DX) Not Covered",
+"Insulin Instruction Covered",
+"Internet Charges Not Covered",
+"Kelly Pad & Pail Covered",
+"Kidney Basin Covered",
+"Lactation Counselling Not Covered",
+"Ligation (BTL) Not Covered",
+"Medical Certificate Not Covered",
+"Medical Cup Covered",
+"Medical/Guest Tray Not Covered",
+"Medicine Glass Covered",
+"Name Tag Covered",
+"Nipple Protect Not Covered",
+"No Accredited Specialization in Hospital Covered",
+"Nursery Supplies (100 - Dr. Victor - Vitamin Baby) Covered",
+"Nutren/ Ensure Dietary Per Case Covered",
+"Nutrition Management Covered",
+"Patient Gown Covered",
+"Petroleum Jelly Not Covered",
+"Pillows/Beddings Not Covered",
+"Pregnancy Test Covered",
+"Private Nurse Service Not Covered",
+"Shampoo Not Covered",
+"SLMC Kit @ Cathlab Covered",
+"Soap Not Covered",
+"Splint Covered",
+"Spoon and Fork Not Covered",
+"Sputum Cup Covered",
+"Sterile Bottle Covered",
+"Swabsticks Covered",
+"Telephone Call Not Covered",
+"Thermo Quilt Covered",
+"Thermometer Covered",
+"Thermoscan Probe Covered",
+"Tissue Paper Not Covered",
+"Tongue Depressor Covered",
+"Toothpaste Not Covered",
+"Transfer Fee - Upgrade Room Not Covered",
+"Tumbler Covered",
+"Under Pad Covered",
+"Urinal Covered",
+"Urine Cup/Bag Covered",
+"Wadding Sheet Covered",
+"Wash Basin Not Covered",
+"Wee Bag/ Urine Cup/ Stool Cup Covered",
+"Xerox/ Photocopy Not Covered",
+"Alcohol Swab Covered",
+        "Alcohol (Bottle) Not Covered",
+        "Alcohol (Spray) Not Covered"
+    ];
+
+    const vehiItems = [
+                "Abdominal Binder Not Covered",
+"Admission Fee: Processing for admission, no other charges : Covered",
+"Admission Kit: Not Covered",
+"Alcohol (Bottle): Not Covered",
+"Ambulance Service: FL Covered up to MBL (hosp to hosp) if: 1. test is not available 2. transfer of admission 3. limited to land ambulance conduction only",
+"Antigen Test: Not Covered; RT-PCR is Covered",
+"Arm Splint/Splint: Not Covered",
+"Assistant Fee (Surgeon's Asst): For reimbursement claim: to follow FL policy, subj to MBL; For in-network claim: follow Flexi RUV, subj to MBL",
+"Bedpan: Not Covered",
+"Bedsheet: Not Covered",
+"Blood: 2nd layer to follow 1st layer covered benefits; Flexi to provide FL with copy of the 1st layer benefit matrix",
+"Blood Typing: For covered surgical case, Covered",
+"Calibrated Glass: Not Covered",
+"Cane: Not Covered",
+"Crutches: Not Covered",
+"Diaper: Not Covered",
+"Dietary Services: Not Covered",
+"Dri Sheet: Not Covered",
+"Elastic Bandage: Not Covered",
+"Environmental Fee: Not Covered",
+"ER Fee: Covered; Flexi to provide list of specific coverable ER cases",
+"Estra Linen/Pillow/Toilet Paper/Tissue: Not Covered",
+"Extra Bed/Room: Not Covered",
+"Extra Meals: Not Covered",
+"Face Mask/Aerosol Mask: Not Covered",
+"Glass With Hospital Logo: Not Covered",
+"Gown Set: Not Covered",
+"Handling Fee: Not Covered",
+"Humidifier Fee: Not Covered",
+"ID Bracelet/ID: Not Covered",
+"Implants: Not Covered",
+"Incineration: Fee Not Covered",
+"IV Tray: Not Covered",
+"Kidney Basin: Not Covered",
+"Lens: Not Covered",
+"Linen: Not Covered",
+"Measuring Glass: Not Covered",
+"Medical Records, Photocopy: Not Covered",
+"Miscellaneous Expenses: Not Covered",
+"Morning Care Kit: Not Covered",
+"Name Tag/Wrist Band: Not Covered",
+"Nebulization Kit: Covered if related to diagnosis",
+"Pathological Fee: Not Covered",
+"Patient Specimen: Kit Not Covered",
+"Pillow: Not Covered",
+"PPE: Not Covered",
+"Processing Fee: Not Covered",
+"Razor: Not Covered",
+"Records And Documents: Not Covered",
+"Rent Of Appliances (TV, Remote Control, Electric Fan, Etc): Not Covered",
+"Resident's Fee: Covered up to MBL",
+"Sanitary Napkin: Not Covered",
+"Service Of Private Nurse: Not Covered",
+"Shaver: Not Covered",
+"Take Home Meds/Within Confinement: Not Covered",
+"Telephone Calls/Newspaper: Not Covered",
+"Thermometer: Not Covered",
+"Transfer Fee: Not Covered if initial room is patient’s choice",
+"Underpads: Not Covered",
+"Urine Bag: Not Covered",
+"Finfu: NA",
+"Varicose Stockings: Not Covered",
+"Vitamins/Food Supplement: Covered if prescribed during admission; related to dx",
+"Wheel Chair: Not Covered",
+"Urinal Bag/Wee Bag: Not Covered",
+"Service Fee: Not Covered",
+"Decontamination Fee: Not Covered",
+"Dri-Sheet: Not Covered",
+"Acetone: Not Covered",
+"Air Horse Adaptor: Covered if oxygen use is needed",
+"Bap Abdominal Binder: Not Covered",
+"Bus. Office Miscellaneous: Not Covered",
+"Bus. Office Miscellaneous-HMO: Not Covered",
+"Castor Oil: Not Covered",
+"Clinical Abstract Or Medical Cert: Not Covered",
+"Crossmatching Covered: for surgical case",
+"Digital Thermometer: Not Covered",
+"Draw Sheet: Not Covered",
+"Instrumentation: Fee Covered",
+"Razor: Not Covered",
+"Splint (Etc): Not Covered",
+"Thermoscan Probe: Not Covered",
+"Towelettes Extra Large: Not Covered",
+"Urine Bag: Not Covered",
+"Bedside Commode/Day: Not Covered",
+"Antigen Not: Covered If Not Related To Dx Not Covered",
+"Surgical Mask/Mask/KN95: Not Covered",
+"ID Bracelet: Not Covered",
+"Pillow: Not Covered",
+"Bedsheet: Not Covered",
+"Doormat: Not Covered",
+"Nursing Service/Shift: Not Covered",
+"Medical Service Fee: Not Covered",
+"Splint (Adult): Not Covered",
+"Sanitation/Disinfection Fee: Not Covered",
+"IC Cleanser: Not Covered",
+"Disinfection Charge: Not Covered",
+"Records And Documents: Not Covered",
+"PPE: Not Covered",
+"Droplight: Not Covered",
+"Nursing Care (Clean Area): Not Covered",
+"Environmental Levy: Not Covered",
+"Grounding Plate: Not Covered",
+"Disease Commidity Package: Not Covered",
+"General Xray Stat Fee (After Office Hours):  FL Stat fees Covered for ER and confinement cases",
+"Double Infection Charge: Not Covered",
+"Essential Consumable Fee: Not Covered",
+"Booties: Not Covered",
+"Safety Goggles: Not Covered",
+"Antibody Screening: Not Covered",
+"Surgical Gown: Not Covered",
+"Mask Face KN95: Not Covered",
+"Shoe Cover: Not Covered",
+"Cap Sur Bouffant Style: Not Covered",
+"Alcohol Spray: Not Covered",
+"Underpads: Not Covered",
+"Bedpan: Not Covered",
+"Nutrition Assessment: Not Covered",
+"ABO Typing Stat: Covered for surgical case",
+"OR Cap: Covered for surgical case",
+"Observation Fee: Covered for confinement cases"
+    ];
+
+    // Function to show the selected scheme
+    function showScheme() {
+      const select = document.getElementById('schemeSelect');
+      const value = select.value;
+      document.getElementById('miscellaneousNonVehi').style.display = value === 'miscellaneousNonVehi' ? 'block' : 'none';
+      document.getElementById('miscellaneousVehi').style.display = value === 'miscellaneousVehi' ? 'block' : 'none';
+    }
+
+    // Function to filter and display autocomplete items
+    function autoCompleteItem(inputId, resultId) {
+        const input = document.getElementById(inputId).value.toLowerCase();
+        const resultDiv = document.getElementById(resultId);
+        
+        // If input is empty, clear the result
+        if (input === "") {
+            resultDiv.innerHTML = "";
+            return; // Exit the function
+        }
+        
+        const items = inputId === 'NonVehiitemInput' ? nonVehiItems : vehiItems;
+        const filteredItems = items.filter(item => item.toLowerCase().includes(input));
+        
+        // Clear previous results
+        resultDiv.innerHTML = '';
+        
+        // Display filtered results
+        filteredItems.forEach(item => {
+            const div = document.createElement('div');
+            div.textContent = item;
+            resultDiv.appendChild(div);
+        });
+    }
+
+    // Initialize the scheme display
+    showScheme();
+  </script>
+
+</body>
+</html>
