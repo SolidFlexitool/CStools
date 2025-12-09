@@ -135,29 +135,29 @@
     </div>
 
     <div class="scheme" id="scheme2">
-      <h2>Scheme 2: In excess of 10,000 OP Limit 80/20</h2>
-      <input type="number" id="remainingLimit" placeholder="Enter Remaining Limit" oninput="calculateExcess2()">
+      <h2>Scheme 2: 10k OP Limit in excess 80/20</h2>
+      <input type="number" id="remainingLimit" placeholder="Enter Remaining Limit(if no remaining put 0)" oninput="calculateExcess2()">
       <input type="number" id="availAmount" placeholder="Enter Total Availed Amount" oninput="calculateExcess2()">
       <div id="scheme2Result" class="result"></div>
       <button onclick="copyResult('scheme2Result')">Copy Result</button>
     </div>
 
     <div class="scheme" id="scheme3">
-      <h2>Scheme 3: 5000 Excess 50/50</h2>
+      <h2>Scheme 3: 5000 per procedure in Excess 50/50</h2>
       <input type="number" id="amount3" placeholder="Enter the Procedure Amount" oninput="calculateExcess3()">
       <div id="scheme3Result" class="result"></div>
       <button onclick="copyResult('scheme3Result')">Copy Result</button>
     </div>
 
     <div class="scheme" id="scheme4">
-      <h2>Scheme 4: 2000 Excess 70/30</h2>
+      <h2>Scheme 4: 2000 per procedure Excess 70/30</h2>
       <input type="number" id="amount4" placeholder="Enter the Procedure Amount" oninput="calculateExcess4()">
       <div id="scheme4Result" class="result"></div>
       <button onclick="copyResult('scheme4Result')">Copy Result</button>
     </div>
 
     <div class="scheme" id="scheme5">
-      <h2>Scheme 5: 5000 Excess 70/30</h2>
+      <h2>Scheme 5: 5000 per procedure in excess 70/30</h2>
       <input type="number" id="amount5" placeholder="Enter the Procedure Amount" oninput="calculateExcess5()">
       <div id="scheme5Result" class="result"></div>
       <button onclick="copyResult('scheme5Result')">Copy Result</button>
@@ -194,7 +194,7 @@
       if (avail > limit) {
         const excess = avail - limit;
         document.getElementById("scheme2Result").innerHTML = `
-          <strong>Excess:</strong> ${excess.toFixed(2)}<br>
+          <strong>Excess from Remaining Limit:</strong> ${excess.toFixed(2)}<br>
           <strong>80% of Excess:</strong> ${(excess * 0.8).toFixed(2)}<br>
           <strong>20% (c/o Patient):</strong> ${(excess * 0.2).toFixed(2)}<br>
           <strong>Total Covered(Remaining Limit + 80% of Excess):</strong> ${(limit + excess * 0.8).toFixed(2)}
