@@ -93,8 +93,12 @@
       background-color: #0d1b2a;
       border-radius: 8px;
       padding: 1rem;
-      flex-grow: 1;
       overflow-y: auto;
+    }
+
+    .calc-result {
+      max-height: 150px; /* Adjusted to make it smaller */
+      flex-grow: 0; /* Prevent it from growing */
     }
 
     .calc-buttons {
@@ -236,6 +240,7 @@
         <button onclick="multiplyUnit(155)">Suite x 155</button>
       </div>
       <div class="calc-result" id="calcResult" role="region" aria-live="polite"></div>
+      <button onclick="copyResult('calcResult')">Copy Result</button>
     </div>
   </div>
 
@@ -287,6 +292,11 @@
       } else {
         calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
       }
+    }
+
+    function copyResult(id) {
+      const resultText = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(resultText).then(() => alert('Copied!'));
     }
 
     // Add event listener for Enter key
