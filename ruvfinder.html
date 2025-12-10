@@ -134,11 +134,21 @@
       margin: 1rem 0;
     }
 
-    .logo-container img {
+    .glow-logo {
       width: 220px;
       max-width: 100%;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(79,172,254,0.6);
+      box-shadow: 0 0 20px #4facfe, 0 0 40px #00f2fe, 0 0 60px #4facfe;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 10px #4facfe, 0 0 20px #00f2fe, 0 0 30px #4facfe;
+      }
+      to {
+        box-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe, 0 0 60px #00f2fe;
+      }
     }
 
     /* Responsive adjustments */
@@ -177,7 +187,7 @@
 <body>
   <!-- Logo -->
   <div class="logo-container">
-    <img src="your-logo.png" alt="RUV Finder Logo" />
+    <img src="your-logo.png" alt="RUV Finder Logo" class="glow-logo" />
   </div>
 
   <!-- Navigation Buttons -->
