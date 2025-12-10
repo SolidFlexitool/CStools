@@ -169,11 +169,12 @@
 
     <label for="schemeSelect" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Select a Scheme:</label>
     <select id="schemeSelect" onchange="showScheme()">
-      <option value="scheme1">Scheme 1: 7500 Per Procedure in Excess 70/30</option>
+      <option value="scheme1" selected="selected">Scheme 1: 7500 Per Procedure in Excess 70/30</option>
       <option value="scheme2">Scheme 2: In excess of 10,000 OP Limit 80/20</option>
       <option value="scheme3">Scheme 3: 5000 Excess 50/50</option>
       <option value="scheme4">Scheme 4: 2000 Excess 70/30</option>
       <option value="scheme5">Scheme 5: 5000 Excess 70/30</option>
+      <option value="scheme6">Scheme 6: Incremental Fee</option>
     </select>
 
     <div class="scheme" id="scheme1">
@@ -216,6 +217,21 @@
       <input type="number" id="amount5" placeholder="Enter the Procedure Amount" oninput="calculateExcess5()">
       <div id="scheme5Result" class="result" role="region" aria-live="polite"></div>
       <button onclick="copyResult('scheme5Result')">Copy Result</button>
+    </div>
+
+    <div class="scheme" id="scheme6">
+      <h2>Scheme 6: Incremental Fee</h2>
+      <label for="grossBill" style="display: block; margin-bottom: 0.5rem;">Gross Hospital Bill:</label>
+      <input type="number" id="grossBill" placeholder="Enter Gross Hospital Bill">
+      <label for="roomBoard" style="display: block; margin-bottom: 0.5rem;">Total Room and Board:</label>
+      <input type="number" id="roomBoard" placeholder="Enter Total Room and Board">
+      <label for="disapproved" style="display: block; margin-bottom: 0.5rem;">Disapproved Charges:</label>
+      <input type="number" id="disapproved" placeholder="Enter Disapproved Charges">
+      <label for="creditMemo" style="display: block; margin-bottom: 0.5rem;">Credit Memo (if any):</label>
+      <input type="number" id="creditMemo" placeholder="Enter Credit Memo">
+      <button onclick="calculateExcess6()">Calculate Incremental Fee</button>
+      <div id="scheme6Result" class="result" role="region" aria-live="polite"></div>
+      <button onclick="copyResult('scheme6Result')">Copy Result</button>
     </div>
   </div>
 
@@ -291,6 +307,22 @@
         <strong>Total Covered (5000 Limit plus 70% of Excess):</strong> ${covered.toFixed(2)}
       `;
     }
+
+    function calculateExcess6() {
+      const gross = parseFloat(document.getElementById("grossBill").value) || 0;
+      const room = parseFloat(document.getElementById("roomBoard").value) || 0;
+      const dis = parseFloat(document.getElementById("disapproved").value) || 0;
+      const credit = parseFloat(document.getElementById("creditMemo").value) || 0;
+      const net = gross - room - dis - credit;
+      const fee = net * 0.20;
+      document.getElementById("scheme6Result").innerHTML = `
+        <strong>Net Amount (Gross Hospital Bill - Total Room & Board - Disapproved Charges - Credit Memo):</strong> ${net.toFixed(2)}<br>
+        <strong>Incremental Fee (20% of Net Amount):</strong> ${fee.toFixed(2)}
+      `;
+    }
+
+    // Automatically show the default scheme on page load
+    window.addEventListener('load', showScheme);
   </script>
 
 </body>
