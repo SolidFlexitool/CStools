@@ -151,6 +151,23 @@
       }
     }
 
+    /* Loading spinner */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #4facfe;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
     /* Responsive adjustments */
     @media (max-width: 768px) {
       body {
@@ -242,18 +259,24 @@
       calcResultDiv.innerHTML = '';
       currentUnit = null;
 
-      if (data[code]) {
-        const item = data[code];
-        currentUnit = parseFloat(item.unit);
-        resultDiv.innerHTML = `
-          <p><strong>Description:</strong> ${item.description}</p>
-          <p><strong>Unit:</strong> ${item.unit}</p>
-          <p><strong>Category:</strong> ${item.category}</p>
-          <p><strong>Subcategory:</strong> ${item.subCategory}</p>
-        `;
-      } else {
-        resultDiv.innerHTML = '<p>No data found for this code.</p>';
-      }
+      // Show loading animation
+      resultDiv.innerHTML = '<div class="loading"></div> Searching...';
+
+      // Simulate a short delay for loading effect (optional, remove if not needed)
+      setTimeout(() => {
+        if (data[code]) {
+          const item = data[code];
+          currentUnit = parseFloat(item.unit);
+          resultDiv.innerHTML = `
+            <p><strong>Description:</strong> ${item.description}</p>
+            <p><strong>Unit:</strong> ${item.unit}</p>
+            <p><strong>Category:</strong> ${item.category}</p>
+            <p><strong>Subcategory:</strong> ${item.subCategory}</p>
+          `;
+        } else {
+          resultDiv.innerHTML = '<p>No data found for this code.</p>';
+        }
+      }, 500); // 500ms delay for demo; adjust or remove as needed
     }
 
     function multiplyUnit(multiplier) {
@@ -265,6 +288,13 @@
         calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
       }
     }
+
+    // Add event listener for Enter key
+    document.getElementById('codeInput').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        searchCode();
+      }
+    });
 
     window.onload = loadData;
   </script>
