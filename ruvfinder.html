@@ -321,7 +321,7 @@
       const calcResultDiv = document.getElementById("calcResult");
       if (currentUnit !== null) {
         const result = currentUnit * multiplier;
-        calcResultDiv.innerHTML = `<p><strong>${currentUnit} × ${multiplier} = ${result.toFixed(2)}</strong></p>`;
+        calcResultDiv.innerHTML = `<p><strong>${currentUnit} × ${multiplier} = ${Math.trunc(result)}</strong></p>`;
       } else {
         calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
       }
