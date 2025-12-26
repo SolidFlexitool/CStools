@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CSTools RUV FINDER</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #010048;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .main-container {
+      display: flex;
+      gap: 2rem;
+      padding: 2rem;
+      background-color: rgba(0,0,0,0.2);
+      border-radius: 20px;
+      max-width: 100%;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+
+    .container, .calculator {
+      background-color: #1c2b3a;
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
+      min-height: 400px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 400px;
+      max-width: 90vw;
+    }
+
+    .calculator {
+      width: 280px;
+      max-width: 90vw;
+    }
+
+    h1, h2 {
+      text-align: center;
+      color: #4facfe;
+      margin-bottom: 1rem;
+      font-weight: 600;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      border: none;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button, .nav-button {
+      display: inline-block;
+      width: 100%;
+      padding: 12px;
+      font-size: 1rem;
+      background: #4facfe;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      text-align: center;
+      color: white;
+      text-decoration: none;
+      transition: background 0.3s, transform 0.2s;
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+
+    button:hover, .nav-button:hover {
+      background: #00f2fe;
+      transform: translateY(-2px);
+    }
+
+    .result, .calc-result {
+      margin-top: 1.5rem;
+      background-color: #0d1b2a;
+      border-radius: 8px;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    .calc-result {
+      max-height: 150px;
+      flex-grow: 0;
+    }
+
+    .calc-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .calc-buttons button {
+      font-size: 1rem;
+      background: #1e90ff;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .calc-buttons button:hover {
+      background: #00bcd4;
+      transform: translateY(-1px);
+    }
+
+    .nav-container {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .nav-container .nav-button {
+      width: auto;
+      min-width: 150px;
+      padding: 10px 20px;
+    }
+
+    /* Logo styling */
+    .logo-container {
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .glow-logo {
+      width: 220px;
+      max-width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 20px #4facfe, 0 0 40px #00f2fe, 0 0 60px #4facfe;
+      animation: glow 2s infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        box-shadow: 0 0 10px #4facfe, 0 0 20px #00f2fe, 0 0 30px #4facfe;
+      }
+      to {
+        box-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe, 0 0 60px #00f2fe;
+      }
+    }
+
+    /* Loading spinner */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid #4facfe;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Autocomplete suggestions */
+    .autocomplete-suggestions {
+      position: absolute;
+      background-color: #1c2b3a;
+      border: 1px solid #4facfe;
+      border-radius: 8px;
+      max-height: 200px;
+      overflow-y: auto;
+      width: 100%;
+      z-index: 1000;
+      display: none;
+    }
+
+    .autocomplete-suggestions div {
+      padding: 10px;
+      cursor: pointer;
+      border-bottom: 1px solid #333;
+    }
+
+    .autocomplete-suggestions div:hover {
+      background-color: #4facfe;
+      color: white;
+    }
+
+    .autocomplete-container {
+      position: relative;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      .main-container {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+      }
+      .container, .calculator {
+        width: 100%;
+        max-width: 100%;
+      }
+      .nav-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .nav-container .nav-button {
+        min-width: 200px;
+      }
+    }
+
+    /* Accessibility improvements */
+    button:focus, .nav-button:focus, input:focus {
+      outline: 2px solid #4facfe;
+      outline-offset: 2px;
+    }
+
+    /* Better text formatting in results */
+    .result p, .calc-result p {
+      margin: 0.5rem 0;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <!-- Logo -->
+  <div class="logo-container">
+    <img src="your-logo.png" alt="RUV Finder Logo" class="glow-logo" />
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="nav-container">
+    <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
+    <a href="Misc.html" class="nav-button">Go to Miscellaneous</a>
+    <a href="index.html" class="nav-button">Go to Calculator</a>
+  </div>
+    
+  <!-- Main App -->
+  <div class="main-container">
+    <div class="container">
+      <h1>CSTools RUV FINDER</h1>
+      <label for="codeInput" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Enter RVS Code:</label>
+      <div class="autocomplete-container">
+        <input type="text" id="codeInput" placeholder="Enter rvs code..." aria-describedby="result" />
+        <div id="suggestions" class="autocomplete-suggestions"></div>
+      </div>
+      <button onclick="searchCode()">Search</button>
+      <div class="result" id="result" role="region" aria-live="polite"></div>
+    </div>
+
+    <div class="calculator">
+      <h2>Unit Multiplier 2026</h2>
+      <div class="calc-buttons">
+        <button onclick="multiplyUnit(155)">Ward / Out-Patient- OR x 155</button>
+        <button onclick="multiplyUnit(160)">Semi Private x 160</button>
+        <button onclick="multiplyUnit(165)">Private x 165</button>
+        <button onclick="multiplyUnit(155)">Suite/Nursery/ICU x 170</button>
+      </div>
+      <div class="calc-result" id="calcResult" role="region" aria-live="polite"></div>
+      <button onclick="copyResult('calcResult')">Copy Result</button>
+    </div>
+  </div>
+
+  <script>
+    let data = {};
+    let currentUnit = null;
+    let codes = []; // Array of available codes for autocomplete
+
+    async function loadData() {
+      try {
+        const response = await fetch('data.json');
+        data = await response.json();
+        codes = Object.keys(data); // Extract codes for suggestions
+      } catch (error) {
+        document.getElementById("result").innerHTML = '<p>Error loading data.</p>';
+      }
+    }
+
+    function searchCode(code = null) {
+      const inputCode = code || document.getElementById("codeInput").value.trim();
+      const resultDiv = document.getElementById("result");
+      const calcResultDiv = document.getElementById("calcResult");
+      calcResultDiv.innerHTML = '';
+      currentUnit = null;
+      document.getElementById("suggestions").style.display = 'none'; // Hide suggestions
+
+      // Show loading animation
+      resultDiv.innerHTML = '<div class="loading"></div> Searching...';
+
+      setTimeout(() => {
+        if (data[inputCode]) {
+          const item = data[inputCode];
+          currentUnit = parseFloat(item.unit);
+          resultDiv.innerHTML = `
+            <p><strong>Description:</strong> ${item.description}</p>
+            <p><strong>Unit:</strong> ${item.unit}</p>
+            <p><strong>Category:</strong> ${item.category}</p>
+            <p><strong>Subcategory:</strong> ${item.subCategory}</p>
+          `;
+        } else {
+          resultDiv.innerHTML = '<p>No data found for this code.</p>';
+        }
+      }, 500);
+    }
+
+    function multiplyUnit(multiplier) {
+      const calcResultDiv = document.getElementById("calcResult");
+      if (currentUnit !== null) {
+        const result = currentUnit * multiplier;
+        calcResultDiv.innerHTML = `<p><strong>${currentUnit} × ${multiplier} = ${Math.trunc(result)}</strong></p>`;
+      } else {
+        calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
+      }
+    }
+
+    function copyResult(id) {
+      const resultText = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(resultText).then(() => alert('Copied!'));
+    }
+
+    // Autocomplete functionality
+    document.getElementById('codeInput').addEventListener('input', function() {
+      const query = this.value.trim().toLowerCase();
+      const suggestionsDiv = document.getElementById('suggestions');
+      suggestionsDiv.innerHTML = '';
+
+      if (query.length > 0) {
+        const matches = codes.filter(code => code.toLowerCase().includes(query)).slice(0, 5); // Limit to 5 suggestions
+        if (matches.length > 0) {
+          matches.forEach(match => {
+            const div = document.createElement('div');
+            div.textContent = match;
+            div.onclick = () => {
+              document.getElementById('codeInput').value = match;
+              searchCode(match);
+            };
+            suggestionsDiv.appendChild(div);
+          });
+          suggestionsDiv.style.display = 'block';
+        } else {
+          suggestionsDiv.style.display = 'none';
+        }
+      } else {
+        suggestionsDiv.style.display = 'none';
+      }
+    });
+
+    // Hide suggestions on click outside
+    document.addEventListener('click', function(e) {
+      if (!document.querySelector('.autocomplete-container').contains(e.target)) {
+        document.getElementById('suggestions').style.display = 'none';
+      }
+    });
+
+    // Enter key to search
+    document.getElementById('codeInput').addEventListener('keydown', function(event) {
+      if (event.key === 'Enter') {
+        searchCode();
+      }
+    });
+
+    window.onload = loadData;
+  </script>
+</body>
+</html>
