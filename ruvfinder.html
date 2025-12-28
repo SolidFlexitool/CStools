@@ -56,7 +56,7 @@
       font-weight: 600;
     }
 
-    input[type="text"] {
+    input[type="text"], input[type="number"], select {
       width: 100%;
       padding: 12px;
       font-size: 1rem;
@@ -116,6 +116,14 @@
     .calc-buttons button:hover {
       background: #00bcd4;
       transform: translateY(-1px);
+    }
+
+    .visits-container {
+      display: none;
+      margin-top: 1rem;
+      background-color: #0d1b2a;
+      border-radius: 8px;
+      padding: 1rem;
     }
 
     .nav-container {
@@ -224,7 +232,7 @@
     }
 
     /* Accessibility improvements */
-    button:focus, .nav-button:focus, input:focus {
+    button:focus, .nav-button:focus, input:focus, select:focus {
       outline: 2px solid #4facfe;
       outline-offset: 2px;
     }
@@ -272,6 +280,22 @@
       </div>
       <div class="calc-result" id="calcResult" role="region" aria-live="polite"></div>
       <button onclick="copyResult('calcResult')">Copy Result</button>
+      <button onclick="toggleVisits()">Visits</button>
+      <div class="visits-container" id="visitsContainer">
+        <label for="visitsInput">Number of Visits:</label>
+        <input type="number" id="visitsInput" min="1" placeholder="Enter number of visits" />
+        <label for="roomSelect">Room Category:</label>
+        <select id="roomSelect">
+          <option value="900">Ward - 900</option>
+          <option value="1200">Semi Private - 1200</option>
+          <option value="1500">Private - 1500</option>
+          <option value="2000">Suite - 2000</option>
+          <option value="2500">ICU - 2500</option>
+        </select>
+        <button onclick="calculateVisits()">Calculate Visits</button>
+        <div id="visitsResult"></div>
+        <button onclick="addToTotal()">Add to Total</button>
+      </div>
     </div>
   </div>
 
@@ -279,6 +303,8 @@
     let data = {};
     let currentUnit = null;
     let codes = []; // Array of available codes for autocomplete
+    let currentBaseRate = 0;
+    let visitsCost = 0;
 
     async function loadData() {
       try {
@@ -296,6 +322,9 @@
       const calcResultDiv = document.getElementById("calcResult");
       calcResultDiv.innerHTML = '';
       currentUnit = null;
+      currentBaseRate = 0;
+      visitsCost = 0;
+      document.getElementById("visitsResult").innerHTML = '';
       document.getElementById("suggestions").style.display = 'none'; // Hide suggestions
 
       // Show loading animation
@@ -320,11 +349,40 @@
     function multiplyUnit(multiplier) {
       const calcResultDiv = document.getElementById("calcResult");
       if (currentUnit !== null) {
-        const result = currentUnit * multiplier;
-        calcResultDiv.innerHTML = `<p><strong>${currentUnit} × ${multiplier} = ${Math.trunc(result)}</strong></p>`;
+        currentBaseRate = Math.trunc(currentUnit * multiplier);
+        calcResultDiv.innerHTML = `<p><strong>Base Rate: ${currentBaseRate}</strong></p>`;
+        updateTotal();
       } else {
         calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
       }
+    }
+
+    function toggleVisits() {
+      const container = document.getElementById("visitsContainer");
+      container.style.display = container.style.display === 'none' ? 'block' : 'none';
+    }
+
+    function calculateVisits() {
+      const visits = parseInt(document.getElementById("visitsInput").value);
+      const roomRate = parseInt(document.getElementById("roomSelect").value);
+      if (visits > 0) {
+        visitsCost = visits * roomRate;
+        document.getElementById("visitsResult").innerHTML = `<p><strong>Visits Cost: ${visitsCost}</strong></p>`;
+        updateTotal();
+      } else {
+        document.getElementById("visitsResult").innerHTML = `<p>Please enter a valid number of visits.</p>`;
+      }
+    }
+
+    function addToTotal() {
+      // This function is optional; the total updates automatically
+      updateTotal();
+    }
+
+    function updateTotal() {
+      const calcResultDiv = document.getElementById("calcResult");
+      const total = currentBaseRate + visitsCost;
+      calcResultDiv.innerHTML = `<p><strong>Base Rate: ${currentBaseRate}</strong></p><p><strong>Visits Cost: ${visitsCost}</strong></p><p><strong>Total: ${total}</strong></p>`;
     }
 
     function copyResult(id) {
