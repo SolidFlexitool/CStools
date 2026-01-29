@@ -287,7 +287,7 @@
         if (patientPays > 0) {
           resultHTML += `<strong>30% (c/o Patient) after Discount:</strong> ${patientPays.toFixed(2)}<br>`;
         } else {
-          resultHTML += `<strong>No Payables (Discount covers or exceeds patient share)</strong><br>`;
+          resultHTML += `<strong>No Payables (Discount covers the exceeds patient share)</strong><br>`;
         }
       } else {
         resultHTML += `<strong>30% (c/o Patient):</strong> ${patientPays.toFixed(2)}<br>`;
