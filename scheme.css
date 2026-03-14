@@ -1,0 +1,9 @@
+.scheme {
+  display: none;
+  background-color: #0d1b2a;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  min-height: 220px; /* forces all schemes to be same size */
+  box-sizing: border-box; /* ensures padding is included */
+}
