@@ -400,9 +400,9 @@
       let excess = val > 5000 ? val - 5000 : 0;
       let covered = 5000 + excess * 0.5;
       document.getElementById("scheme3Result").innerHTML = `
-        <strong>Excess:</strong> ${excess.toFixed(2)}<br>
-        <strong>50% of the Excess:</strong> ${(excess * 0.5).toFixed(2)}<br>
-        <strong>Total Covered (5000 Limit plus 50% of Excess):</strong> ${covered.toFixed(2)}
+        <strong>Excess from 5000:</strong> ${excess.toFixed(2)}<br>
+        <strong>Other 50% of the Excess (Care of Patient):</strong> ${(excess * 0.5).toFixed(2)}<br>
+        <strong>Total Covered (5000 Limit plus 50% of theExcess):</strong> ${covered.toFixed(2)}
       `;
     }
 
