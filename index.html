@@ -305,232 +305,68 @@
 </div>
 
   <script>
-    function showScheme() {
-      const selected = document.getElementById("schemeSelect").value;
-      document.querySelectorAll('.scheme').forEach(div => div.style.display = 'none');
-      document.getElementById(selected).style.display = 'block';
-    }
+  function showScheme() {
+    const selected = document.getElementById("schemeSelect").value;
+    document.querySelectorAll('.scheme').forEach(div => div.style.display = 'none');
+    document.getElementById(selected).style.display = 'block';
+  }
 
-    function toggleDiscount() {
-      const discountDiv = document.getElementById("discountDiv");
-      const discountCheckbox = document.getElementById("discountCheckbox");
-      if (discountCheckbox.checked) {
-        discountDiv.style.display = 'block';
+  // ... (keep all your existing calculateExcess functions exactly as they are) ...
+
+  // ADD THIS NEW FUNCTION
+  function copyResult(resultId) {
+    const resultElement = document.getElementById(resultId);
+    
+    if (!resultElement || !resultElement.textContent.trim()) {
+      alert('No result to copy. Please calculate first.');
+      return;
+    }
+    
+    const textArea = document.createElement('textarea');
+    textArea.value = resultElement.textContent.trim();
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+      const successful = document.execCommand('copy');
+      if (successful) {
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.background = '#00f2fe';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = '#4facfe';
+        }, 1500);
       } else {
-        discountDiv.style.display = 'none';
-        document.getElementById("discountAmount").value = '';
+        alert('Copy failed. Please select and copy manually.');
       }
-      calculateExcess1();
-    }
-
-    function calculateExcess1() {
-  const val = parseFloat(document.getElementById("amount1").value) || 0;
-  const withDiscount = document.getElementById("discountCheckbox").checked;
-
-  let excess = val > 7500 ? val - 7500 : 0;
-
-  let flexicare70 = excess * 0.70;
-  let patient30 = excess * 0.30;
-
-  let discount = 0;
-  let payable = patient30;
-
-  if (withDiscount) {
-    discount = val * 0.20;
-
-    if (patient30 > discount) {
-      payable = patient30 - discount;
-    } else {
-      payable = 0;
+    } catch (err) {
+      navigator.clipboard.writeText(resultElement.textContent.trim()).then(() => {
+        const button = event.target;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.background = '#00f2fe';
+        
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.style.background = '#4facfe';
+        }, 1500);
+      }).catch(() => {
+        alert('Copy failed. Please select and copy manually.');
+      });
+    } finally {
+      document.body.removeChild(textArea);
     }
   }
 
-  let covered = 7500 + flexicare70;
-
-  document.getElementById("scheme1Result").innerHTML = `
-    <strong>Excess at 7500:</strong> ${excess.toFixed(2)}<br>
-    <strong>70% of Excess (Flexicare):</strong> ${flexicare70.toFixed(2)}<br>
-    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
-    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
-    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
-    <strong>Total Covered:</strong> ${covered.toFixed(2)}
-  `;
-}
-
-    function calculateExcess2() {
-  const limit = parseFloat(document.getElementById("remainingLimit").value) || 0;
-  const avail = parseFloat(document.getElementById("availAmount").value) || 0;
-  const withDiscount = document.getElementById("discountCheckbox2")?.checked;
-
-  if (avail > limit) {
-
-    const excess = avail - limit;
-
-    const flexicare80 = excess * 0.80;
-    const patient20 = excess * 0.20;
-
-    let discount = 0;
-    let payable = patient20;
-
-    if (withDiscount) {
-      discount = avail * 0.20;
-
-      if (patient20 > discount) {
-        payable = patient20 - discount;
-      } else {
-        payable = 0;
-      }
-    }
-
-    const covered = limit + flexicare80;
-
-    document.getElementById("scheme2Result").innerHTML = `
-      <strong>Excess from Remaining Limit:</strong> ${excess.toFixed(2)}<br>
-      <strong>80% of Excess (Flexicare):</strong> ${flexicare80.toFixed(2)}<br>
-      <strong>20% Patient Share:</strong> ${patient20.toFixed(2)}<br>
-      ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
-      <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
-      <strong>Total Covered (Remaining Limit + 80% Excess):</strong> ${covered.toFixed(2)}
-    `;
-  }
-}
-
-    function calculateExcess3() {
-      const val = parseFloat(document.getElementById("amount3").value);
-      let excess = val > 5000 ? val - 5000 : 0;
-      let covered = 5000 + excess * 0.5;
-      document.getElementById("scheme3Result").innerHTML = `
-        <strong>Excess from 5000:</strong> ${excess.toFixed(2)}<br>
-        <strong>Other 50% of the Excess (Care of Patient):</strong> ${(excess * 0.5).toFixed(2)}<br>
-        <strong>Total Covered (5000 Limit plus 50% of theExcess):</strong> ${covered.toFixed(2)}
-      `;
-    }
-
-    function calculateExcess4() {
-  const val = parseFloat(document.getElementById("amount4").value) || 0;
-  const withDiscount = document.getElementById("discountCheckbox4")?.checked;
-
-  let excess = val > 2000 ? val - 2000 : 0;
-
-  let flexicare70 = excess * 0.70;
-  let patient30 = excess * 0.30;
-
-  let discount = 0;
-  let payable = patient30;
-
-  if (withDiscount) {
-    discount = val * 0.20;
-    payable = patient30 > discount ? patient30 - discount : 0;
-  }
-
-  let covered = 2000 + flexicare70;
-
-  document.getElementById("scheme4Result").innerHTML = `
-    <strong>Excess:</strong> ${excess.toFixed(2)}<br>
-    <strong>70% of Excess (Flexicare):</strong> ${flexicare70.toFixed(2)}<br>
-    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
-    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
-    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
-    <strong>Total Covered:</strong> ${covered.toFixed(2)}
-  `;
-}
-
-    function calculateExcess5() {
-  const val = parseFloat(document.getElementById("amount5").value) || 0;
-  const withDiscount = document.getElementById("discountCheckbox5")?.checked;
-
-  let excess = val > 5000 ? val - 5000 : 0;
-
-  let flexicare70 = excess * 0.70;
-  let patient30 = excess * 0.30;
-
-  let discount = 0;
-  let payable = patient30;
-
-  if (withDiscount) {
-    discount = val * 0.20;
-    payable = patient30 > discount ? patient30 - discount : 0;
-  }
-
-  let covered = 5000 + flexicare70;
-
-  document.getElementById("scheme5Result").innerHTML = `
-    <strong>Excess:</strong> ${excess.toFixed(2)}<br>
-    <strong>70% of Excess (Flexicare):</strong> ${flexicare70.toFixed(2)}<br>
-    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
-    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
-    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
-    <strong>Total Covered:</strong> ${covered.toFixed(2)}
-  `;
-}
-
-    function calculateExcess6() {
-      const gross = parseFloat(document.getElementById("grossBill").value) || 0;
-      const room = parseFloat(document.getElementById("roomBoard").value) || 0;
-      const dis = parseFloat(document.getElementById("disapproved").value) || 0;
-      const credit = parseFloat(document.getElementById("creditMemo").value) || 0;
-      const net = gross - room - dis - credit;
-      const fee = net * 0.20;
-      document.getElementById("scheme6Result").innerHTML = `
-        <strong>Net Amount (Gross Hospital Bill - Total Room & Board - Disapproved Charges - Credit Memo):</strong> ${net.toFixed(2)}<br>
-        <strong>Incremental Fee (20% of Net Amount):</strong> ${fee.toFixed(2)}
-      `;
-    }
-
-
-      function calculateExcess7() {
-  const val = parseFloat(document.getElementById("amount7").value) || 0;
-  const withDiscount = document.getElementById("discountCheckbox7")?.checked;
-
-  // 50/50 split
-  let flexicare50 = val * 0.50;
-  let patient50 = val * 0.50;
-
-  let discount = 0;
-  let payable = patient50;
-
-  if (withDiscount) {
-    discount = val * 0.20;
-    payable = patient50 > discount ? patient50 - discount : 0;
-  }
-
-  document.getElementById("scheme7Result").innerHTML = `
-    <strong>50% Flexicare Share:</strong> ${flexicare50.toFixed(2)}<br>
-    <strong>50% Patient Share:</strong> ${patient50.toFixed(2)}<br>
-    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
-    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
-    <strong>Total Covered by Flexicare:</strong> ${flexicare50.toFixed(2)}
-  `;
-}
-
-function calculateExcess8() {
-  const val = parseFloat(document.getElementById("amount8").value) || 0;
-  const withDiscount = document.getElementById("discountCheckbox8")?.checked;
-
-  // 70/30 split
-  let flexicare70 = val * 0.70;
-  let patient30 = val * 0.30;
-
-  let discount = 0;
-  let payable = patient30;
-
-  if (withDiscount) {
-    discount = val * 0.20;
-    payable = patient30 > discount ? patient30 - discount : 0;
-  }
-
-  document.getElementById("scheme8Result").innerHTML = `
-    <strong>70% Flexicare Share:</strong> ${flexicare70.toFixed(2)}<br>
-    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
-    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
-    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
-    <strong>Total Covered by Flexicare:</strong> ${flexicare70.toFixed(2)}
-  `;
-}
-
-    // Automatically show the default scheme on page load
-    window.addEventListener('load', showScheme);
-  </script>
+  window.addEventListener('load', showScheme);
+</script>
 
 </body>
 </html>
