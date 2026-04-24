@@ -119,6 +119,7 @@
       gap: 1rem;
       margin-bottom: 1rem;
     }
+    /* Responsive adjustments */
     @media (max-width: 768px) {
       body {
         padding: 1rem;
@@ -138,10 +139,12 @@
         width: 150px;
       }
     }
+    /* Accessibility improvements */
     button:focus, .nav-button:focus, select:focus, input:focus {
       outline: 2px solid #4facfe;
       outline-offset: 2px;
     }
+    /* Better spacing for schemes */
     .scheme h2 {
       margin-top: 0;
     }
@@ -179,21 +182,355 @@
       <option value="scheme6">INCREMENTAL COMPUTATION</option>   
     </select>
 
-    <!-- ALL SCHEMES ARE NOW PROPERLY INSIDE CONTAINER -->
-
     <div class="scheme" id="scheme1">
-      <h2>Scheme 1: 7500 Excess 70/30</h2>
-      <label for="amount1">Enter the Procedure Amount:</label>
-      <input type="number" id="amount1" placeholder="Enter the Procedure Amount" oninput="calculateExcess1()">
-      <div style="margin: 1rem 0;">
-        <input type="checkbox" id="discountCheckbox" onchange="calculateExcess1()">
-        <label for="discountCheckbox">Apply Senior/PWD Discount</label>
-      </div>
-      <div id="scheme1Result" class="result"></div>
-      <button onclick="copyResult('scheme1Result')">Copy Result</button>
-    </div>
+  <h2>Scheme 1: 7500 Excess 70/30</h2>
+
+  <label for="amount1">Enter the Procedure Amount:</label>
+  <input type="number" id="amount1" placeholder="Enter the Procedure Amount" oninput="calculateExcess1()">
+
+  <div style="margin: 1rem 0;">
+    <input type="checkbox" id="discountCheckbox" onchange="calculateExcess1()">
+    <label for="discountCheckbox">Apply Senior/PWD Discount</label>
+  </div>
+
+  <div id="scheme1Result" class="result"></div>
+
+  <button onclick="copyResult('scheme1Result')">Copy Result</button>
+</div>
 
     <div class="scheme" id="scheme2">
-      <h2>Scheme 2: 10k OP Limit in excess 80/20</h2>
-      <label for="remainingLimit">Enter Remaining Limit (if no remaining put 0):</label>
-     
+  <h2>Scheme 2: 10k OP Limit in excess 80/20</h2>
+
+  <label for="remainingLimit">Enter Remaining Limit (if no remaining put 0):</label>
+  <input type="number" id="remainingLimit" placeholder="Enter Remaining Limit(if no remaining put 0)" oninput="calculateExcess2()">
+
+  <label for="availAmount">Enter Total Availed Amount:</label>
+  <input type="number" id="availAmount" placeholder="Enter Total Availed Amount" oninput="calculateExcess2()">
+
+  <div style="margin: 1rem 0;">
+    <input type="checkbox" id="discountCheckbox2" onchange="calculateExcess2()">
+    <label for="discountCheckbox2">Apply Senior/PWD Discount</label>
+  </div>
+
+  <div id="scheme2Result" class="result"></div>
+  <button onclick="copyResult('scheme2Result')">Copy Result</button>
+</div>
+
+    <div class="scheme" id="scheme3">
+      <h2>Scheme 3: 5000 per procedure in Excess 50/50</h2>
+      <label for="amount3" style="display: block; margin-bottom: 0.5rem;">Enter the Procedure Amount:</label>
+      <input type="number" id="amount3" placeholder="Enter the Procedure Amount" oninput="calculateExcess3()">
+      <div id="scheme3Result" class="result" role="region" aria-live="polite"></div>
+      <button onclick="copyResult('scheme3Result')">Copy Result</button>
+    </div>
+
+    <div class="scheme" id="scheme4">
+  <h2>Scheme 4: 2000 per procedure Excess 70/30</h2>
+
+  <label for="amount4">Enter the Procedure Amount:</label>
+  <input type="number" id="amount4" placeholder="Enter the Procedure Amount" oninput="calculateExcess4()">
+
+  <!-- Checkbox goes here -->
+  <div style="margin: 1rem 0;">
+    <input type="checkbox" id="discountCheckbox4" onchange="calculateExcess4()">
+    <label for="discountCheckbox4">Apply Senior/PWD Discount</label>
+  </div>
+
+  <div id="scheme4Result" class="result"></div>
+  <button onclick="copyResult('scheme4Result')">Copy Result</button>
+</div>
+
+    <div class="scheme" id="scheme5">
+  <h2>Scheme 5: 5000 per procedure in excess 70/30</h2>
+
+  <label for="amount5">Enter the Procedure Amount:</label>
+  <input type="number" id="amount5" placeholder="Enter the Procedure Amount" oninput="calculateExcess5()">
+
+  <!-- Checkbox goes here -->
+  <div style="margin: 1rem 0;">
+    <input type="checkbox" id="discountCheckbox5" onchange="calculateExcess5()">
+    <label for="discountCheckbox5">Apply Senior/PWD Discount</label>
+  </div>
+
+  <div id="scheme5Result" class="result"></div>
+  <button onclick="copyResult('scheme5Result')">Copy Result</button>
+</div>
+
+    <div class="scheme" id="scheme6">
+      <h2>Scheme 6: Incremental Fee</h2>
+      <label for="grossBill" style="display: block; margin-bottom: 0.5rem;">Gross Hospital Bill:</label>
+      <input type="number" id="grossBill" placeholder="Enter Gross Hospital Bill">
+      <label for="roomBoard" style="display: block; margin-bottom: 0.5rem;">Total Room and Board:</label>
+      <input type="number" id="roomBoard" placeholder="Enter Total Room and Board">
+      <label for="disapproved" style="display: block; margin-bottom: 0.5rem;">Disapproved Charges:</label>
+      <input type="number" id="disapproved" placeholder="Enter Disapproved Charges">
+      <label for="creditMemo" style="display: block; margin-bottom: 0.5rem;">Credit Memo (if any):</label>
+      <input type="number" id="creditMemo" placeholder="Enter Credit Memo">
+      <button onclick="calculateExcess6()">Calculate Incremental Fee</button>
+      <div id="scheme6Result" class="result" role="region" aria-live="polite"></div>
+      <button onclick="copyResult('scheme6Result')">Copy Result</button>
+    </div>
+  </div>
+
+<div class="scheme" id="scheme7">
+  <h2>Scheme 7: 50/50 Sharing</h2>
+
+  <label for="amount7">Enter the Procedure Amount:</label>
+  <input type="number" id="amount7" placeholder="Enter the Procedure Amount" oninput="calculateExcess7()">
+
+  <!-- Senior/PWD Discount Checkbox -->
+  <div style="margin: 1rem 0;">
+    <input type="checkbox" id="discountCheckbox7" onchange="calculateExcess7()">
+    <label for="discountCheckbox7">Apply Senior/PWD Discount</label>
+  </div>
+
+  <div id="scheme7Result" class="result"></div>
+  <button onclick="copyResult('scheme7Result')">Copy Result</button>
+</div>
+
+<div class="scheme" id="scheme8">
+  <h2>Scheme 8: 70/30 Sharing</h2>
+
+  <label for="amount8">Enter the Procedure Amount:</label>
+  <input type="number" id="amount8" placeholder="Enter the Procedure Amount" oninput="calculateExcess8()">
+
+  <!-- Senior/PWD Discount Checkbox -->
+  <div style="margin: 1rem 0;">
+    <input type="checkbox" id="discountCheckbox8" onchange="calculateExcess8()">
+    <label for="discountCheckbox8">Apply Senior/PWD Discount</label>
+  </div>
+
+  <div id="scheme8Result" class="result"></div>
+  <button onclick="copyResult('scheme8Result')">Copy Result</button>
+</div>
+
+  <script>
+    function showScheme() {
+      const selected = document.getElementById("schemeSelect").value;
+      document.querySelectorAll('.scheme').forEach(div => div.style.display = 'none');
+      document.getElementById(selected).style.display = 'block';
+    }
+
+    function toggleDiscount() {
+      const discountDiv = document.getElementById("discountDiv");
+      const discountCheckbox = document.getElementById("discountCheckbox");
+      if (discountCheckbox.checked) {
+        discountDiv.style.display = 'block';
+      } else {
+        discountDiv.style.display = 'none';
+        document.getElementById("discountAmount").value = '';
+      }
+      calculateExcess1();
+    }
+
+    function calculateExcess1() {
+  const val = parseFloat(document.getElementById("amount1").value) || 0;
+  const withDiscount = document.getElementById("discountCheckbox").checked;
+
+  let excess = val > 7500 ? val - 7500 : 0;
+
+  let flexicare70 = excess * 0.70;
+  let patient30 = excess * 0.30;
+
+  let discount = 0;
+  let payable = patient30;
+
+  if (withDiscount) {
+    discount = val * 0.20;
+
+    if (patient30 > discount) {
+      payable = patient30 - discount;
+    } else {
+      payable = 0;
+    }
+  }
+
+  let covered = 7500 + flexicare70;
+
+  document.getElementById("scheme1Result").innerHTML = `
+    <strong>Excess at 7500:</strong> ${excess.toFixed(2)}<br>
+    <strong>70% of Excess (Flexicare):</strong> ${flexicare70.toFixed(2)}<br>
+    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
+    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
+    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
+    <strong>Total Covered:</strong> ${covered.toFixed(2)}
+  `;
+}
+
+    function calculateExcess2() {
+  const limit = parseFloat(document.getElementById("remainingLimit").value) || 0;
+  const avail = parseFloat(document.getElementById("availAmount").value) || 0;
+  const withDiscount = document.getElementById("discountCheckbox2")?.checked;
+
+  if (avail > limit) {
+
+    const excess = avail - limit;
+
+    const flexicare80 = excess * 0.80;
+    const patient20 = excess * 0.20;
+
+    let discount = 0;
+    let payable = patient20;
+
+    if (withDiscount) {
+      discount = avail * 0.20;
+
+      if (patient20 > discount) {
+        payable = patient20 - discount;
+      } else {
+        payable = 0;
+      }
+    }
+
+    const covered = limit + flexicare80;
+
+    document.getElementById("scheme2Result").innerHTML = `
+      <strong>Excess from Remaining Limit:</strong> ${excess.toFixed(2)}<br>
+      <strong>80% of Excess (Flexicare):</strong> ${flexicare80.toFixed(2)}<br>
+      <strong>20% Patient Share:</strong> ${patient20.toFixed(2)}<br>
+      ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
+      <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
+      <strong>Total Covered (Remaining Limit + 80% Excess):</strong> ${covered.toFixed(2)}
+    `;
+  }
+}
+
+    function calculateExcess3() {
+      const val = parseFloat(document.getElementById("amount3").value);
+      let excess = val > 5000 ? val - 5000 : 0;
+      let covered = 5000 + excess * 0.5;
+      document.getElementById("scheme3Result").innerHTML = `
+        <strong>Excess from 5000:</strong> ${excess.toFixed(2)}<br>
+        <strong>Other 50% of the Excess (Care of Patient):</strong> ${(excess * 0.5).toFixed(2)}<br>
+        <strong>Total Covered (5000 Limit plus 50% of theExcess):</strong> ${covered.toFixed(2)}
+      `;
+    }
+
+    function calculateExcess4() {
+  const val = parseFloat(document.getElementById("amount4").value) || 0;
+  const withDiscount = document.getElementById("discountCheckbox4")?.checked;
+
+  let excess = val > 2000 ? val - 2000 : 0;
+
+  let flexicare70 = excess * 0.70;
+  let patient30 = excess * 0.30;
+
+  let discount = 0;
+  let payable = patient30;
+
+  if (withDiscount) {
+    discount = val * 0.20;
+    payable = patient30 > discount ? patient30 - discount : 0;
+  }
+
+  let covered = 2000 + flexicare70;
+
+  document.getElementById("scheme4Result").innerHTML = `
+    <strong>Excess:</strong> ${excess.toFixed(2)}<br>
+    <strong>70% of Excess (Flexicare):</strong> ${flexicare70.toFixed(2)}<br>
+    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
+    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
+    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
+    <strong>Total Covered:</strong> ${covered.toFixed(2)}
+  `;
+}
+
+    function calculateExcess5() {
+  const val = parseFloat(document.getElementById("amount5").value) || 0;
+  const withDiscount = document.getElementById("discountCheckbox5")?.checked;
+
+  let excess = val > 5000 ? val - 5000 : 0;
+
+  let flexicare70 = excess * 0.70;
+  let patient30 = excess * 0.30;
+
+  let discount = 0;
+  let payable = patient30;
+
+  if (withDiscount) {
+    discount = val * 0.20;
+    payable = patient30 > discount ? patient30 - discount : 0;
+  }
+
+  let covered = 5000 + flexicare70;
+
+  document.getElementById("scheme5Result").innerHTML = `
+    <strong>Excess:</strong> ${excess.toFixed(2)}<br>
+    <strong>70% of Excess (Flexicare):</strong> ${flexicare70.toFixed(2)}<br>
+    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
+    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
+    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
+    <strong>Total Covered:</strong> ${covered.toFixed(2)}
+  `;
+}
+
+    function calculateExcess6() {
+      const gross = parseFloat(document.getElementById("grossBill").value) || 0;
+      const room = parseFloat(document.getElementById("roomBoard").value) || 0;
+      const dis = parseFloat(document.getElementById("disapproved").value) || 0;
+      const credit = parseFloat(document.getElementById("creditMemo").value) || 0;
+      const net = gross - room - dis - credit;
+      const fee = net * 0.20;
+      document.getElementById("scheme6Result").innerHTML = `
+        <strong>Net Amount (Gross Hospital Bill - Total Room & Board - Disapproved Charges - Credit Memo):</strong> ${net.toFixed(2)}<br>
+        <strong>Incremental Fee (20% of Net Amount):</strong> ${fee.toFixed(2)}
+      `;
+    }
+
+
+      function calculateExcess7() {
+  const val = parseFloat(document.getElementById("amount7").value) || 0;
+  const withDiscount = document.getElementById("discountCheckbox7")?.checked;
+
+  // 50/50 split
+  let flexicare50 = val * 0.50;
+  let patient50 = val * 0.50;
+
+  let discount = 0;
+  let payable = patient50;
+
+  if (withDiscount) {
+    discount = val * 0.20;
+    payable = patient50 > discount ? patient50 - discount : 0;
+  }
+
+  document.getElementById("scheme7Result").innerHTML = `
+    <strong>50% Flexicare Share:</strong> ${flexicare50.toFixed(2)}<br>
+    <strong>50% Patient Share:</strong> ${patient50.toFixed(2)}<br>
+    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
+    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
+    <strong>Total Covered by Flexicare:</strong> ${flexicare50.toFixed(2)}
+  `;
+}
+
+function calculateExcess8() {
+  const val = parseFloat(document.getElementById("amount8").value) || 0;
+  const withDiscount = document.getElementById("discountCheckbox8")?.checked;
+
+  // 70/30 split
+  let flexicare70 = val * 0.70;
+  let patient30 = val * 0.30;
+
+  let discount = 0;
+  let payable = patient30;
+
+  if (withDiscount) {
+    discount = val * 0.20;
+    payable = patient30 > discount ? patient30 - discount : 0;
+  }
+
+  document.getElementById("scheme8Result").innerHTML = `
+    <strong>70% Flexicare Share:</strong> ${flexicare70.toFixed(2)}<br>
+    <strong>30% Patient Share:</strong> ${patient30.toFixed(2)}<br>
+    ${withDiscount ? `<strong>Senior Discount (20% of Original Price):</strong> ${discount.toFixed(2)}<br>` : ""}
+    <strong>Final Patient Payable:</strong> ${payable.toFixed(2)}<br>
+    <strong>Total Covered by Flexicare:</strong> ${flexicare70.toFixed(2)}
+  `;
+}
+
+    // Automatically show the default scheme on page load
+    window.addEventListener('load', showScheme);
+  </script>
+
+</body>
+</html>
