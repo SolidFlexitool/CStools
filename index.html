@@ -6,20 +6,15 @@
   <title> CSTools Calculator</title>
   <style>
     body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url('flexibg.gif'); /* CHANGE THIS PATH */
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  color: #fff;
-  margin: 0;
-  padding: 2rem;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #010048;
+      color: #fff;
+      margin: 0;
+      padding: 2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
     .nav-button {
       display: inline-block;
@@ -159,156 +154,146 @@
   </style>
 </head>
 <body>
-
   <!-- Logo -->
   <div class="logo-container">
     <img src="your-logo.png" alt="CSTools Logo" class="glow-logo">
   </div>
-
   <!-- Navigation Buttons -->
   <div class="nav-container">
     <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
     <a href="Misc.html" class="nav-button">Go to Miscellaneous</a>
     <a href="index.html" class="nav-button">Go to Calculator</a>
   </div>
-
   <div class="container">
     <h1>CSTools Calculator</h1>
+<label for="schemeSelect" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Select a Scheme:</label>
+<select id="schemeSelect" onchange="showScheme()">
+  <option value="scheme1" selected="selected">Scheme 1: 7500 Per Procedure in Excess 70/30</option>
+  <option value="scheme2">Scheme 2: In excess of 10,000 OP Limit 80/20</option>
+  <option value="scheme3">Scheme 3: 5000 Excess 50/50</option>
+  <option value="scheme4">Scheme 4: 2000 Excess 70/30</option>
+  <option value="scheme5">Scheme 5: 5000 Excess 70/30</option>
+  <option value="scheme7">Scheme 6: 50/50 Sharing Scheme</option>
+  <option value="scheme8">Scheme 7: 70/30 Sharing Scheme </option>
+  <option value="scheme6">INCREMENTAL COMPUTATION</option>   
+</select>
 
-    <label for="schemeSelect" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Select a Scheme:</label>
-    <select id="schemeSelect" onchange="showScheme()">
-      <option value="scheme1" selected="selected">Scheme 1: 7500 Per Procedure in Excess 70/30</option>
-      <option value="scheme2">Scheme 2: In excess of 10,000 OP Limit 80/20</option>
-      <option value="scheme3">Scheme 3: 5000 Excess 50/50</option>
-      <option value="scheme4">Scheme 4: 2000 Excess 70/30</option>
-      <option value="scheme5">Scheme 5: 5000 Excess 70/30</option>
-      <option value="scheme7">Scheme 6: 50/50 Sharing Scheme</option>
-      <option value="scheme8">Scheme 7: 70/30 Sharing Scheme </option>
-      <option value="scheme6">INCREMENTAL COMPUTATION</option>   
-    </select>
+<div class="scheme" id="scheme1">
 
-    <div class="scheme" id="scheme1">
   <h2>Scheme 1: 7500 Excess 70/30</h2>
+<label for="amount1">Enter the Procedure Amount:</label>
+<input type="number" id="amount1" placeholder="Enter the Procedure Amount" oninput="calculateExcess1()">
 
-  <label for="amount1">Enter the Procedure Amount:</label>
-  <input type="number" id="amount1" placeholder="Enter the Procedure Amount" oninput="calculateExcess1()">
 
   <div style="margin: 1rem 0;">
     <input type="checkbox" id="discountCheckbox" onchange="calculateExcess1()">
     <label for="discountCheckbox">Apply Senior/PWD Discount</label>
   </div>
-
   <div id="scheme1Result" class="result"></div>
+<button onclick="copyResult('scheme1Result')">Copy Result</button>
 
-  <button onclick="copyResult('scheme1Result')">Copy Result</button>
+
 </div>
+<div class="scheme" id="scheme2">
 
-    <div class="scheme" id="scheme2">
   <h2>Scheme 2: 10k OP Limit in excess 80/20</h2>
+<label for="remainingLimit">Enter Remaining Limit (if no remaining put 0):</label>
+<input type="number" id="remainingLimit" placeholder="Enter Remaining Limit(if no remaining put 0)" oninput="calculateExcess2()">
 
-  <label for="remainingLimit">Enter Remaining Limit (if no remaining put 0):</label>
-  <input type="number" id="remainingLimit" placeholder="Enter Remaining Limit(if no remaining put 0)" oninput="calculateExcess2()">
 
-  <label for="availAmount">Enter Total Availed Amount:</label>
-  <input type="number" id="availAmount" placeholder="Enter Total Availed Amount" oninput="calculateExcess2()">
+<label for="availAmount">Enter Total Availed Amount:</label>
+<input type="number" id="availAmount" placeholder="Enter Total Availed Amount" oninput="calculateExcess2()">
+
 
   <div style="margin: 1rem 0;">
     <input type="checkbox" id="discountCheckbox2" onchange="calculateExcess2()">
     <label for="discountCheckbox2">Apply Senior/PWD Discount</label>
   </div>
-
   <div id="scheme2Result" class="result"></div>
   <button onclick="copyResult('scheme2Result')">Copy Result</button>
 </div>
+<div class="scheme" id="scheme3">
+  <h2>Scheme 3: 5000 per procedure in Excess 50/50</h2>
+  <label for="amount3" style="display: block; margin-bottom: 0.5rem;">Enter the Procedure Amount:</label>
+  <input type="number" id="amount3" placeholder="Enter the Procedure Amount" oninput="calculateExcess3()">
+  <div id="scheme3Result" class="result" role="region" aria-live="polite"></div>
+  <button onclick="copyResult('scheme3Result')">Copy Result</button>
+</div>
 
-    <div class="scheme" id="scheme3">
-      <h2>Scheme 3: 5000 per procedure in Excess 50/50</h2>
-      <label for="amount3" style="display: block; margin-bottom: 0.5rem;">Enter the Procedure Amount:</label>
-      <input type="number" id="amount3" placeholder="Enter the Procedure Amount" oninput="calculateExcess3()">
-      <div id="scheme3Result" class="result" role="region" aria-live="polite"></div>
-      <button onclick="copyResult('scheme3Result')">Copy Result</button>
-    </div>
+<div class="scheme" id="scheme4">
 
-    <div class="scheme" id="scheme4">
   <h2>Scheme 4: 2000 per procedure Excess 70/30</h2>
+<label for="amount4">Enter the Procedure Amount:</label>
+<input type="number" id="amount4" placeholder="Enter the Procedure Amount" oninput="calculateExcess4()">
 
-  <label for="amount4">Enter the Procedure Amount:</label>
-  <input type="number" id="amount4" placeholder="Enter the Procedure Amount" oninput="calculateExcess4()">
 
   <!-- Checkbox goes here -->
   <div style="margin: 1rem 0;">
     <input type="checkbox" id="discountCheckbox4" onchange="calculateExcess4()">
     <label for="discountCheckbox4">Apply Senior/PWD Discount</label>
   </div>
-
   <div id="scheme4Result" class="result"></div>
   <button onclick="copyResult('scheme4Result')">Copy Result</button>
 </div>
+<div class="scheme" id="scheme5">
 
-    <div class="scheme" id="scheme5">
   <h2>Scheme 5: 5000 per procedure in excess 70/30</h2>
+<label for="amount5">Enter the Procedure Amount:</label>
+<input type="number" id="amount5" placeholder="Enter the Procedure Amount" oninput="calculateExcess5()">
 
-  <label for="amount5">Enter the Procedure Amount:</label>
-  <input type="number" id="amount5" placeholder="Enter the Procedure Amount" oninput="calculateExcess5()">
 
   <!-- Checkbox goes here -->
   <div style="margin: 1rem 0;">
     <input type="checkbox" id="discountCheckbox5" onchange="calculateExcess5()">
     <label for="discountCheckbox5">Apply Senior/PWD Discount</label>
   </div>
-
   <div id="scheme5Result" class="result"></div>
   <button onclick="copyResult('scheme5Result')">Copy Result</button>
 </div>
+<div class="scheme" id="scheme6">
+  <h2>Scheme 6: Incremental Fee</h2>
+  <label for="grossBill" style="display: block; margin-bottom: 0.5rem;">Gross Hospital Bill:</label>
+  <input type="number" id="grossBill" placeholder="Enter Gross Hospital Bill">
+  <label for="roomBoard" style="display: block; margin-bottom: 0.5rem;">Total Room and Board:</label>
+  <input type="number" id="roomBoard" placeholder="Enter Total Room and Board">
+  <label for="disapproved" style="display: block; margin-bottom: 0.5rem;">Disapproved Charges:</label>
+  <input type="number" id="disapproved" placeholder="Enter Disapproved Charges">
+  <label for="creditMemo" style="display: block; margin-bottom: 0.5rem;">Credit Memo (if any):</label>
+  <input type="number" id="creditMemo" placeholder="Enter Credit Memo">
+  <button onclick="calculateExcess6()">Calculate Incremental Fee</button>
+  <div id="scheme6Result" class="result" role="region" aria-live="polite"></div>
+  <button onclick="copyResult('scheme6Result')">Copy Result</button>
+</div>
 
-    <div class="scheme" id="scheme6">
-      <h2>Scheme 6: Incremental Fee</h2>
-      <label for="grossBill" style="display: block; margin-bottom: 0.5rem;">Gross Hospital Bill:</label>
-      <input type="number" id="grossBill" placeholder="Enter Gross Hospital Bill">
-      <label for="roomBoard" style="display: block; margin-bottom: 0.5rem;">Total Room and Board:</label>
-      <input type="number" id="roomBoard" placeholder="Enter Total Room and Board">
-      <label for="disapproved" style="display: block; margin-bottom: 0.5rem;">Disapproved Charges:</label>
-      <input type="number" id="disapproved" placeholder="Enter Disapproved Charges">
-      <label for="creditMemo" style="display: block; margin-bottom: 0.5rem;">Credit Memo (if any):</label>
-      <input type="number" id="creditMemo" placeholder="Enter Credit Memo">
-      <button onclick="calculateExcess6()">Calculate Incremental Fee</button>
-      <div id="scheme6Result" class="result" role="region" aria-live="polite"></div>
-      <button onclick="copyResult('scheme6Result')">Copy Result</button>
-    </div>
   </div>
-
 <div class="scheme" id="scheme7">
   <h2>Scheme 7: 50/50 Sharing</h2>
+<label for="amount7">Enter the Procedure Amount:</label>
+<input type="number" id="amount7" placeholder="Enter the Procedure Amount" oninput="calculateExcess7()">
 
-  <label for="amount7">Enter the Procedure Amount:</label>
-  <input type="number" id="amount7" placeholder="Enter the Procedure Amount" oninput="calculateExcess7()">
 
   <!-- Senior/PWD Discount Checkbox -->
   <div style="margin: 1rem 0;">
     <input type="checkbox" id="discountCheckbox7" onchange="calculateExcess7()">
     <label for="discountCheckbox7">Apply Senior/PWD Discount</label>
   </div>
-
   <div id="scheme7Result" class="result"></div>
   <button onclick="copyResult('scheme7Result')">Copy Result</button>
 </div>
-
 <div class="scheme" id="scheme8">
   <h2>Scheme 8: 70/30 Sharing</h2>
+<label for="amount8">Enter the Procedure Amount:</label>
+<input type="number" id="amount8" placeholder="Enter the Procedure Amount" oninput="calculateExcess8()">
 
-  <label for="amount8">Enter the Procedure Amount:</label>
-  <input type="number" id="amount8" placeholder="Enter the Procedure Amount" oninput="calculateExcess8()">
 
   <!-- Senior/PWD Discount Checkbox -->
   <div style="margin: 1rem 0;">
     <input type="checkbox" id="discountCheckbox8" onchange="calculateExcess8()">
     <label for="discountCheckbox8">Apply Senior/PWD Discount</label>
   </div>
-
   <div id="scheme8Result" class="result"></div>
   <button onclick="copyResult('scheme8Result')">Copy Result</button>
 </div>
-
   <script>
     function showScheme() {
       const selected = document.getElementById("schemeSelect").value;
@@ -541,6 +526,5 @@ function calculateExcess8() {
     // Automatically show the default scheme on page load
     window.addEventListener('load', showScheme);
   </script>
-
 </body>
 </html>
