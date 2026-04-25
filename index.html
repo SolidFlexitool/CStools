@@ -323,6 +323,11 @@
       calculateExcess1();
     }
 
+    function copyResult(id) {
+      const resultText = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(resultText).then(() => alert('Copied!'));
+    }
+
     function calculateExcess1() {
   const val = parseFloat(document.getElementById("amount1").value) || 0;
   const withDiscount = document.getElementById("discountCheckbox").checked;
