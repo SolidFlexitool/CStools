@@ -1,171 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title> CSTools Miscellaneous</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #010048;
-      color: #fff;
-      margin: 0;
-      padding: 2rem;
-    }
-    .nav-button {
-      display: inline-block;
-      background-color: #4facfe;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: bold;
-      font-size: 1rem;
-      text-align: center;
-      transition: background 0.3s ease;
-      margin-bottom: 1rem;
-    }
-    .nav-button:hover {
-      background-color: #00f2fe;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      padding: 2rem;
-      background-color: #1c2b3a;
-      border-radius: 16px;
-      box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
-    }
-    h1, h2 {
-      text-align: center;
-      color: #4facfe;
-    }
-    select, input[type="number"], input[type="text"] {
-      width: 100%;
-      padding: 6px;
-      margin: 6px 0;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #e0e0e0;
-      color: #000;
-    }
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      background: #4facfe;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s;
-      margin-top: 10px;
-      color: white;
-    }
-    button:hover {
-      background: #00f2fe;
-    }
-    .scheme {
-      display: none;
-      background-color: #0d1b2a;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-    }
-    .result {
-      background-color: #e0e0e0;
-      border-radius: 8px;
-      padding: 1rem;
-      color: #000;
-      margin-top: 10px;
-      max-height: 300px;
-      overflow-y: auto;
-      position: relative;
-    }
-    .result-item {
-      padding: 5px 0;
-      cursor: pointer;
-      border-bottom: 1px solid #ccc;
-    }
-    .result-item:hover {
-      background-color: #f0f0f0;
-    }
-    .result-item mark {
-      background-color: #4facfe;
-      color: white;
-      padding: 2px 4px;
-      border-radius: 3px;
-    }
-    .result p strong {
-      color: #1e88e5;
-    }
-    .logo-container {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-    .glow-logo {
-      width: 220px;
-      max-width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #4facfe, 0 0 40px #00f2fe, 0 0 60px #4facfe;
-      animation: glow 2s infinite alternate;
-    }
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 10px #4facfe, 0 0 20px #00f2fe, 0 0 30px #4facfe;
-      }
-      to {
-        box-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe, 0 0 60px #00f2fe;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSTools Miscellaneous</title>
+<style>
+  :root{
+    --bg:            #0a0f1c;
+    --panel:         #101a2c;
+    --panel-alt:     #16233a;
+    --line:          #223252;
+    --text:          #e8edf6;
+    --muted:         #8b98ac;
+    --teal:          #2dd4bf;
+    --teal-dim:      #1a3a37;
+    --amber:         #f5a623;
+    --amber-dim:     #3a2c14;
+    --danger:        #ef4444;
+    --danger-dim:    #3a1818;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
+
+  *{ box-sizing:border-box; }
+
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(1100px 600px at 15% -10%, #12213f 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, #142a2a 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    padding:1.5rem 1rem 3rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
+
+  .brand{ display:flex; align-items:center; gap:.65rem; margin-bottom:1.25rem; }
+  .brand-mark{
+    width:38px; height:38px; border-radius:10px;
+    background:linear-gradient(145deg, var(--teal), #1b8f82);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; color:#03211d; font-size:.95rem;
+    box-shadow:0 0 0 1px rgba(45,212,191,.25), 0 8px 24px -8px rgba(45,212,191,.5);
+  }
+  .brand img.glow-logo{ width:38px; height:38px; border-radius:10px; object-fit:cover; }
+  .brand-text{ line-height:1.1; }
+  .brand-text strong{ display:block; font-size:1.05rem; letter-spacing:.01em; }
+  .brand-text span{ color:var(--muted); font-size:.78rem; }
+
+  .nav-container{ display:flex; flex-wrap:wrap; justify-content:center; gap:.6rem; margin-bottom:1.5rem; }
+  .nav-button{
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:var(--panel-alt); border:1px solid var(--line); color:var(--text);
+    padding:.6rem 1.05rem; border-radius:999px; text-decoration:none;
+    font-weight:500; font-size:.85rem;
+    transition:border-color .18s ease, transform .18s ease, background .18s ease;
+  }
+  .nav-button:hover{ border-color:var(--teal); background:#132437; transform:translateY(-1px); }
+  .nav-button:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .nav-button.current{ border-color:var(--teal); background:var(--teal-dim); color:var(--teal); }
+
+  .app{
+    width:100%; max-width:760px;
+    background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.6);
+    overflow:hidden;
+  }
+  .app-head{ padding:1.5rem 1.5rem .25rem; text-align:center; }
+  .app-head h1{ margin:0 0 .25rem; font-size:1.35rem; letter-spacing:.01em; }
+  .app-head p{ margin:0; color:var(--muted); font-size:.85rem; }
+
+  .tabbar{
+    display:flex; gap:.4rem; overflow-x:auto;
+    padding:1.25rem 1.5rem .75rem;
+    scrollbar-width:thin; scrollbar-color:var(--line) transparent;
+  }
+  .tabbar::-webkit-scrollbar{ height:6px; }
+  .tabbar::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+  .tab{
+    flex:0 0 auto; background:var(--panel-alt); border:1px solid var(--line); color:var(--muted);
+    padding:.6rem 1rem; border-radius:10px; font-size:.8rem; font-weight:600;
+    white-space:nowrap; cursor:pointer; transition:all .16s ease;
+  }
+  .tab:hover{ border-color:#3a4d70; color:var(--text); }
+  .tab.active{ background:linear-gradient(145deg, var(--teal), #17847a); border-color:transparent; color:#03211d; }
+  .tab:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+
+  .scheme{ display:none; padding:.5rem 1.5rem 1.75rem; animation:fadeIn .22s ease; }
+  .scheme.active{ display:block; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+
+  .scheme-desc{
+    color:var(--muted); font-size:.82rem; margin:0 0 1.1rem;
+    padding-bottom:1.1rem; border-bottom:1px dashed var(--line);
+  }
+
+  .field{ margin-bottom:.25rem; }
+  .field label{ display:block; margin-bottom:.4rem; font-size:.8rem; font-weight:500; color:var(--muted); }
+  input[type="text"]{
+    width:100%; padding:.8rem .9rem; font-size:.95rem; font-family:var(--sans);
+    border:1px solid var(--line); border-radius:10px; background:#0d1626; color:var(--text);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input::placeholder{ color:#54617a; }
+  input:focus{ outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(45,212,191,.15); }
+
+  .count-row{
+    display:flex; justify-content:space-between; align-items:center;
+    margin:.7rem 0 .5rem; font-size:.72rem; color:var(--muted);
+  }
+  .count-row .clear-btn{
+    background:none; border:none; color:var(--muted); font-size:.72rem; cursor:pointer;
+    text-decoration:underline; padding:0;
+  }
+  .count-row .clear-btn:hover{ color:var(--teal); }
+
+  .result-list{
+    max-height:360px; overflow-y:auto;
+    border:1px solid var(--line); border-radius:12px; background:#0d1626;
+    scrollbar-width:thin; scrollbar-color:var(--line) transparent;
+  }
+  .result-list::-webkit-scrollbar{ width:6px; }
+  .result-list::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
+
+  .result-item{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:.75rem;
+    padding:.75rem .95rem; border-bottom:1px solid var(--line);
+  }
+  .result-item:last-child{ border-bottom:none; }
+  .result-item .item-text{ flex:1; min-width:0; }
+  .result-item .item-name{ font-size:.85rem; color:var(--text); font-weight:500; line-height:1.4; }
+  .result-item .item-detail{ font-size:.76rem; color:var(--muted); margin-top:.2rem; line-height:1.4; }
+  .result-item mark{
+    background:var(--teal-dim); color:var(--teal); padding:0 3px; border-radius:3px; font-weight:600;
+  }
+
+  .badge{
+    flex:0 0 auto; font-size:.68rem; font-weight:700; letter-spacing:.02em;
+    padding:.28rem .6rem; border-radius:999px; text-transform:uppercase;
+    font-family:var(--mono); white-space:nowrap;
+  }
+  .badge.covered{ background:var(--teal-dim); color:var(--teal); }
+  .badge.not-covered{ background:var(--danger-dim); color:#f87171; }
+  .badge.note{ background:var(--amber-dim); color:var(--amber); }
+
+  .empty-note{ color:var(--muted); font-size:.82rem; text-align:center; padding:1.5rem 0; }
+
+  footer{ margin-top:1.5rem; color:#4d5972; font-size:.75rem; text-align:center; }
+
+  @media (max-width:600px){
+    .app-head h1{ font-size:1.15rem; }
+    .result-item{ flex-direction:column; }
+    .badge{ align-self:flex-start; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
 </head>
 <body>
 
-  <!-- Logo -->
-  <div class="logo-container">
-    <img src="your-logo.png" alt="CSTools Logo" class="glow-logo">
+<div class="brand">
+  <img src="your-logo.png" alt="" class="glow-logo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-mark',textContent:'CS'}))">
+  <div class="brand-text">
+    <strong>CSTools</strong>
+    <span>Coverage lookup</span>
+  </div>
+</div>
+
+<div class="nav-container">
+  <a href="ruvfinder.html" class="nav-button">RUV Finder</a>
+  <a href="Misc.html" class="nav-button current">Miscellaneous</a>
+  <a href="index.html" class="nav-button">Calculator</a>
+</div>
+
+<div class="app">
+  <div class="app-head">
+    <h1>Miscellaneous Items</h1>
+    <p>Search by name or keyword to check if an item is covered.</p>
   </div>
 
-  <div class="container">
-    <h1>CSTools Miscellaneous</h1>
-
-   <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
-   <a href="Misc.html" class="nav-button">Go to Miscellaneous</a>
-   <a href="index.html" class="nav-button">Go to Calculator</a>
-      
-      
-
-  <div class="container">
-
-    <select id="schemeSelect" onchange="showScheme()">
-      <option value="miscellaneousNonVehi">NON-VEHI MISCELLANEOUS</option>
-      <option value="miscellaneousVehi">UPDATED NON COVERABLE ITEMS (VEHI)</option>
-    </select>
-
-
-    <!-- Miscellaneous Section for NonVehi -->
-    <div class="scheme" id="miscellaneousNonVehi">
-      <h2>NON VEHI MISCELLANEOUS</h2>
-      <label for="NonVehiitemInput"><b>Enter Item Name or Keywords:</b> </label>
-      <input type="text" id="NonVehiitemInput" placeholder="Start typing keywords (e.g., blood opd)..." oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
-      <div id="NonVehiItems" class="result"></div>
-
-      
+  <div class="tabbar" role="tablist" aria-label="Item lists">
+    <button class="tab active" id="tab-miscellaneousNonVehi" role="tab" aria-selected="true" aria-controls="miscellaneousNonVehi" onclick="showScheme('miscellaneousNonVehi')">Non-VEHI Miscellaneous</button>
+    <button class="tab" id="tab-miscellaneousVehi" role="tab" aria-selected="false" aria-controls="miscellaneousVehi" onclick="showScheme('miscellaneousVehi')">VEHI Non-Coverable</button>
   </div>
 
-  <!-- Miscellaneous Section for Vehi -->
-  <div class="scheme" id="miscellaneousVehi">
-      <h2>VEHI NON-COVERABLE</h2>
-      <label for="VehiitemInput"><b>Enter Item Name or Keywords:</b> </label>
-      <input type="text" id="VehiitemInput" placeholder="Start typing keywords (e.g., blood typing)..." oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
-      <div id="VehiItems" class="result"></div>
-  </div>
+  <div class="scheme active" id="miscellaneousNonVehi" role="tabpanel" aria-labelledby="tab-miscellaneousNonVehi">
+    <p class="scheme-desc">General ward-level miscellaneous items and whether they're covered.</p>
+    <div class="field">
+      <label for="NonVehiitemInput">Item name or keyword</label>
+      <input type="text" id="NonVehiitemInput" placeholder="e.g. blood opd" oninput="autoCompleteItem('NonVehiitemInput', 'NonVehiItems')">
+    </div>
+    <div class="count-row">
+      <span id="NonVehiItems-count"></span>
+      <button class="clear-btn" onclick="clearSearch('NonVehiitemInput','NonVehiItems')">Clear</button>
+    </div>
+    <div id="NonVehiItems" class="result-list"></div>
   </div>
 
-  <script>
-    // Sample items for NON VEHI and VEHI
-    const nonVehiItems = [
+  <div class="scheme" id="miscellaneousVehi" role="tabpanel" aria-labelledby="tab-miscellaneousVehi">
+    <p class="scheme-desc">VEHI-specific items marked as non-coverable, with notes where relevant.</p>
+    <div class="field">
+      <label for="VehiitemInput">Item name or keyword</label>
+      <input type="text" id="VehiitemInput" placeholder="e.g. blood typing" oninput="autoCompleteItem('VehiitemInput', 'VehiItems')">
+    </div>
+    <div class="count-row">
+      <span id="VehiItems-count"></span>
+      <button class="clear-btn" onclick="clearSearch('VehiitemInput','VehiItems')">Clear</button>
+    </div>
+    <div id="VehiItems" class="result-list"></div>
+  </div>
+</div>
+
+<footer>CSTools Miscellaneous</footer>
+
+<script>
+  // ---------- Non-VEHI: "Name ... Covered" / "Name ... Not Covered" ----------
+  const nonVehiItems = [
 "2D Echo & with Doppler for Less 20 yo (HF not equipped) Not Covered",
 "Abdominal Binder Not Covered",
 "ACL Tear Covered",
@@ -266,12 +324,13 @@
 "Wee Bag/ Urine Cup/ Stool Cup Covered",
 "Xerox/ Photocopy Not Covered",
 "Alcohol Swab Covered",
-        "Alcohol (Bottle) Not Covered",
-        "Alcohol (Spray) Not Covered"
-    ];
+"Alcohol (Bottle) Not Covered",
+"Alcohol (Spray) Not Covered"
+  ];
 
-    const vehiItems = [
-                "Abdominal Binder Not Covered",
+  // ---------- VEHI: "Name: detail (Covered/Not Covered somewhere in detail)" ----------
+  const vehiItems = [
+"Abdominal Binder Not Covered",
 "Admission Fee: Processing for admission, no other charges : Covered",
 "Admission Kit: Not Covered",
 "Alcohol (Bottle): Not Covered",
@@ -328,7 +387,7 @@
 "Take Home Meds/Within Confinement: Not Covered",
 "Telephone Calls/Newspaper: Not Covered",
 "Thermometer: Not Covered",
-"Transfer Fee: Not Covered if initial room is patient’s choice",
+"Transfer Fee: Not Covered if initial room is patient's choice",
 "Underpads: Not Covered",
 "Urine Bag: Not Covered",
 "Finfu: NA",
@@ -392,64 +451,100 @@
 "ABO Typing Stat: Covered for surgical case",
 "OR Cap: Covered for surgical case",
 "Observation Fee: Covered for confinement cases"
-    ];
+  ];
 
-    // Function to show the selected scheme
-    function showScheme() {
-      const select = document.getElementById('schemeSelect');
-      const value = select.value;
-      document.getElementById('miscellaneousNonVehi').style.display = value === 'miscellaneousNonVehi' ? 'block' : 'none';
-      document.getElementById('miscellaneousVehi').style.display = value === 'miscellaneousVehi' ? 'block' : 'none';
+  function escapeHtml(str){
+    return str.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+
+  function highlight(text, keywords){
+    let out = escapeHtml(text);
+    keywords.forEach(k => {
+      if (!k) return;
+      const esc = k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      out = out.replace(new RegExp(`(${esc})`, 'gi'), '<mark>$1</mark>');
+    });
+    return out;
+  }
+
+  // Non-VEHI: strip a trailing "Covered" / "Not Covered" off the raw string
+  function parseNonVehi(raw){
+    const m = raw.match(/^(.*?)\s*(Not Covered|Covered)\s*$/i);
+    if (!m) return { name: raw, status: 'note' };
+    return {
+      name: m[1].trim(),
+      status: /not covered/i.test(m[2]) ? 'not-covered' : 'covered'
+    };
+  }
+
+  // VEHI: split "Name: detail" and infer status from the detail text
+  function parseVehi(raw){
+    const idx = raw.indexOf(':');
+    const name = idx === -1 ? raw : raw.slice(0, idx).trim();
+    const detail = idx === -1 ? '' : raw.slice(idx + 1).trim();
+    let status = 'note';
+    if (/not covered/i.test(detail)) status = 'not-covered';
+    else if (/covered/i.test(detail)) status = 'covered';
+    return { name, detail, status };
+  }
+
+  function badgeLabel(status){
+    return status === 'covered' ? 'Covered' : status === 'not-covered' ? 'Not Covered' : 'See note';
+  }
+
+  function showScheme(id){
+    document.querySelectorAll('.scheme').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(el => { el.classList.remove('active'); el.setAttribute('aria-selected','false'); });
+    document.getElementById(id).classList.add('active');
+    document.getElementById('tab-' + id).classList.add('active');
+    document.getElementById('tab-' + id).setAttribute('aria-selected','true');
+  }
+
+  function clearSearch(inputId, resultId){
+    document.getElementById(inputId).value = '';
+    document.getElementById(resultId).innerHTML = '';
+    document.getElementById(resultId + '-count').textContent = '';
+    document.getElementById(inputId).focus();
+  }
+
+  function autoCompleteItem(inputId, resultId){
+    const input = document.getElementById(inputId).value.trim();
+    const resultDiv = document.getElementById(resultId);
+    const countSpan = document.getElementById(resultId + '-count');
+
+    if (input === ''){
+      resultDiv.innerHTML = '';
+      countSpan.textContent = '';
+      return;
     }
 
-    // Function to highlight keywords in text
-    function highlightKeywords(text, keywords) {
-      let highlighted = text;
-      keywords.forEach(keyword => {
-        const regex = new RegExp(`(${keyword})`, 'gi');
-        highlighted = highlighted.replace(regex, '<mark>$1</mark>');
-      });
-      return highlighted;
+    const isVehi = inputId === 'VehiitemInput';
+    const items = isVehi ? vehiItems : nonVehiItems;
+    const keywords = input.split(/\s+/).filter(k => k.length > 0);
+
+    const parsed = items.map(raw => isVehi ? parseVehi(raw) : parseNonVehi(raw));
+    const filtered = parsed.filter(it => {
+      const hay = (it.name + ' ' + (it.detail || '')).toLowerCase();
+      return keywords.every(k => hay.includes(k.toLowerCase()));
+    });
+
+    countSpan.textContent = filtered.length + (filtered.length === 1 ? ' match' : ' matches');
+
+    if (filtered.length === 0){
+      resultDiv.innerHTML = '<div class="empty-note">No matching items found.</div>';
+      return;
     }
 
-    // Function to filter and display autocomplete items with keyword matching and highlighting
-    function autoCompleteItem(inputId, resultId) {
-        const input = document.getElementById(inputId).value.trim();
-        const resultDiv = document.getElementById(resultId);
-        
-        // If input is empty, clear the result
-        if (input === "") {
-            resultDiv.innerHTML = "";
-            return; // Exit the function
-        }
-        
-        const items = inputId === 'NonVehiitemInput' ? nonVehiItems : vehiItems;
-        const keywords = input.split(/\s+/).filter(k => k.length > 0);
-        
-        const filteredItems = items.filter(item => {
-            const itemLower = item.toLowerCase();
-            return keywords.every(keyword => itemLower.includes(keyword.toLowerCase()));
-        });
-        
-        // Clear previous results
-        resultDiv.innerHTML = '';
-        
-        // Display filtered results with highlighting
-        if (filteredItems.length === 0) {
-            resultDiv.innerHTML = '<div class="result-item">No matching items found.</div>';
-        } else {
-            filteredItems.forEach(item => {
-                const div = document.createElement('div');
-                div.className = 'result-item';
-                div.innerHTML = highlightKeywords(item, keywords);
-                resultDiv.appendChild(div);
-            });
-        }
-    }
-
-    // Initialize the scheme display
-    showScheme();
-  </script>
-
+    resultDiv.innerHTML = filtered.map(it => `
+      <div class="result-item">
+        <div class="item-text">
+          <div class="item-name">${highlight(it.name, keywords)}</div>
+          ${it.detail ? `<div class="item-detail">${highlight(it.detail, keywords)}</div>` : ''}
+        </div>
+        <span class="badge ${it.status}">${badgeLabel(it.status)}</span>
+      </div>
+    `).join('');
+  }
+</script>
 </body>
 </html>
