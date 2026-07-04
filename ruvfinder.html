@@ -1,379 +1,352 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CSTools RUV FINDER</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #010048;
-      color: #fff;
-      margin: 0;
-      padding: 2rem;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSTools RUV Finder</title>
+<style>
+  :root{
+    --bg:            #0a0f1c;
+    --panel:         #101a2c;
+    --panel-alt:     #16233a;
+    --line:          #223252;
+    --text:          #e8edf6;
+    --muted:         #8b98ac;
+    --teal:          #2dd4bf;
+    --teal-dim:      #1a3a37;
+    --amber:         #f5a623;
+    --danger:        #ef4444;
+    --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
 
-    .main-container {
-      display: flex;
-      gap: 2rem;
-      padding: 2rem;
-      background-color: rgba(0,0,0,0.2);
-      border-radius: 20px;
-      max-width: 100%;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 1rem;
-    }
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
 
-    .container, .calculator {
-      background-color: #1c2b3a;
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 0 20px rgba(0, 0, 50, 0.5);
-      min-height: 400px;
-      display: flex;
-      flex-direction: column;
-    }
+  *{ box-sizing:border-box; }
 
-    .container {
-      width: 400px;
-      max-width: 90vw;
-    }
+  body{
+    margin:0;
+    min-height:100vh;
+    background:
+      radial-gradient(1100px 600px at 15% -10%, #12213f 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, #142a2a 0%, transparent 55%),
+      var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    padding:1.5rem 1rem 3rem;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+  }
 
-    .calculator {
-      width: 280px;
-      max-width: 90vw;
-    }
+  /* ---------- header ---------- */
+  .brand{ display:flex; align-items:center; gap:.65rem; margin-bottom:1.25rem; }
+  .brand-mark{
+    width:38px; height:38px; border-radius:10px;
+    background:linear-gradient(145deg, var(--teal), #1b8f82);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; color:#03211d; font-size:.95rem;
+    box-shadow:0 0 0 1px rgba(45,212,191,.25), 0 8px 24px -8px rgba(45,212,191,.5);
+  }
+  .brand img.glow-logo{ width:38px; height:38px; border-radius:10px; object-fit:cover; }
+  .brand-text{ line-height:1.1; }
+  .brand-text strong{ display:block; font-size:1.05rem; letter-spacing:.01em; }
+  .brand-text span{ color:var(--muted); font-size:.78rem; }
 
-    h1, h2 {
-      text-align: center;
-      color: #4facfe;
-      margin-bottom: 1rem;
-      font-weight: 600;
-    }
+  .nav-container{ display:flex; flex-wrap:wrap; justify-content:center; gap:.6rem; margin-bottom:1.5rem; }
+  .nav-button{
+    display:inline-flex; align-items:center; gap:.4rem;
+    background:var(--panel-alt); border:1px solid var(--line); color:var(--text);
+    padding:.6rem 1.05rem; border-radius:999px; text-decoration:none;
+    font-weight:500; font-size:.85rem;
+    transition:border-color .18s ease, transform .18s ease, background .18s ease;
+  }
+  .nav-button:hover{ border-color:var(--teal); background:#132437; transform:translateY(-1px); }
+  .nav-button:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .nav-button.current{ border-color:var(--teal); background:var(--teal-dim); color:var(--teal); }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      margin-bottom: 1rem;
-      border: none;
-      border-radius: 8px;
-      box-sizing: border-box;
-    }
+  /* ---------- layout ---------- */
+  .main-container{
+    display:flex; gap:1.25rem; flex-wrap:wrap; justify-content:center;
+    width:100%; max-width:900px;
+  }
+  .panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:20px;
+    box-shadow:0 30px 60px -30px rgba(0,0,0,.6);
+    padding:1.5rem; display:flex; flex-direction:column;
+  }
+  .panel.search{ flex:1 1 420px; min-width:300px; }
+  .panel.calc{ flex:0 1 300px; min-width:260px; }
 
-    button, .nav-button {
-      display: inline-block;
-      width: 100%;
-      padding: 12px;
-      font-size: 1rem;
-      background: #4facfe;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      text-align: center;
-      color: white;
-      text-decoration: none;
-      transition: background 0.3s, transform 0.2s;
-      margin-bottom: 1rem;
-      font-weight: 500;
-    }
+  .panel h1, .panel h2{ margin:0 0 .25rem; font-size:1.2rem; text-align:center; }
+  .panel > p.sub{ margin:0 0 1.25rem; color:var(--muted); font-size:.82rem; text-align:center; }
 
-    button:hover, .nav-button:hover {
-      background: #00f2fe;
-      transform: translateY(-2px);
-    }
+  .field{ margin-bottom:1rem; }
+  .field label{ display:block; margin-bottom:.4rem; font-size:.8rem; font-weight:500; color:var(--muted); }
 
-    .result, .calc-result {
-      margin-top: 1.5rem;
-      background-color: #0d1b2a;
-      border-radius: 8px;
-      padding: 1rem;
-      overflow-y: auto;
-    }
+  .autocomplete-container{ position:relative; }
+  input[type="text"]{
+    width:100%; padding:.8rem .9rem; font-size:.95rem; font-family:var(--mono);
+    border:1px solid var(--line); border-radius:10px; background:#0d1626; color:var(--text);
+    transition:border-color .15s ease, box-shadow .15s ease;
+  }
+  input::placeholder{ color:#54617a; font-family:var(--sans); }
+  input:focus{ outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(45,212,191,.15); }
 
-    .calc-result {
-      max-height: 150px;
-      flex-grow: 0;
-    }
+  .autocomplete-suggestions{
+    position:absolute; top:calc(100% + 6px); left:0; right:0;
+    background:var(--panel-alt); border:1px solid var(--line); border-radius:10px;
+    max-height:220px; overflow-y:auto; z-index:1000; display:none;
+    box-shadow:0 20px 40px -20px rgba(0,0,0,.7);
+  }
+  .autocomplete-suggestions div{
+    padding:.65rem .9rem; cursor:pointer; font-family:var(--mono); font-size:.85rem;
+    border-bottom:1px solid var(--line); color:var(--text);
+  }
+  .autocomplete-suggestions div:last-child{ border-bottom:none; }
+  .autocomplete-suggestions div:hover{ background:var(--teal-dim); color:var(--teal); }
 
-    .calc-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
+  button.primary, button.ghost{
+    width:100%; padding:.75rem 1rem; font-size:.85rem; font-weight:600;
+    border-radius:10px; cursor:pointer; border:1px solid transparent;
+    transition:transform .15s ease, background .15s ease, border-color .15s ease;
+    margin-top:.25rem;
+  }
+  button.primary{ background:linear-gradient(145deg, var(--teal), #17847a); color:#03211d; }
+  button.primary:hover{ transform:translateY(-1px); }
+  button.ghost{ background:transparent; border-color:var(--line); color:var(--muted); }
+  button.ghost:hover{ border-color:#3a4d70; color:var(--text); }
+  button:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
 
-    .calc-buttons button {
-      font-size: 1rem;
-      background: #1e90ff;
-      transition: background 0.3s, transform 0.2s;
-    }
+  .calc-buttons{ display:flex; flex-direction:column; gap:.55rem; }
+  .calc-buttons button{
+    text-align:left; font-size:.82rem; font-weight:500;
+    background:var(--panel-alt); border:1px solid var(--line); color:var(--text);
+  }
+  .calc-buttons button:hover{ border-color:var(--teal); color:var(--teal); transform:translateY(-1px); }
+  .calc-buttons button .mult{ font-family:var(--mono); color:var(--teal); float:right; }
+  .calc-buttons button:hover .mult{ color:inherit; }
 
-    .calc-buttons button:hover {
-      background: #00bcd4;
-      transform: translateY(-1px);
-    }
+  .result-card{
+    margin-top:1.1rem; background:#0d1626; border:1px solid var(--line); border-radius:14px;
+    padding:1rem 1.1rem; display:none; min-height:1rem;
+  }
+  .result-card.show{ display:block; animation:fadeIn .22s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
 
-    .nav-container {
-      display: flex;
-      gap: 1rem;
-      justify-content: center;
-      margin-bottom: 1rem;
-      flex-wrap: wrap;
-    }
+  .result-rows{ display:grid; gap:.5rem; }
+  .result-row{ display:flex; justify-content:space-between; gap:1rem; font-size:.83rem; color:var(--muted); }
+  .result-row .val{ font-family:var(--mono); color:var(--text); font-weight:500; text-align:right; }
 
-    .nav-container .nav-button {
-      width: auto;
-      min-width: 150px;
-      padding: 10px 20px;
-    }
+  .calc-result{ min-height:1.2rem; }
+  .calc-answer{
+    font-family:var(--mono); font-size:1.1rem; color:var(--teal); font-weight:700; text-align:center;
+  }
+  .calc-answer .eq{ color:var(--muted); font-weight:400; font-size:.9rem; }
 
-    /* Logo styling */
-    .logo-container {
-      text-align: center;
-      margin-bottom: 1rem;
-    }
+  .empty-note{ color:var(--muted); font-size:.82rem; text-align:center; padding:.25rem 0; }
 
-    .glow-logo {
-      width: 220px;
-      max-width: 100%;
-      border-radius: 12px;
-      box-shadow: 0 0 20px #4facfe, 0 0 40px #00f2fe, 0 0 60px #4facfe;
-      animation: glow 2s infinite alternate;
-    }
+  .loading{
+    display:inline-flex; align-items:center; gap:.5rem; color:var(--muted); font-size:.85rem;
+  }
+  .spinner{
+    width:16px; height:16px; border:2.5px solid var(--line); border-top:2.5px solid var(--teal);
+    border-radius:50%; animation:spin .8s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
 
-    @keyframes glow {
-      from {
-        box-shadow: 0 0 10px #4facfe, 0 0 20px #00f2fe, 0 0 30px #4facfe;
-      }
-      to {
-        box-shadow: 0 0 20px #00f2fe, 0 0 40px #4facfe, 0 0 60px #00f2fe;
-      }
-    }
+  #toast{
+    position:fixed; left:50%; bottom:24px; transform:translate(-50%, 20px);
+    background:var(--teal); color:#03211d; font-weight:600; font-size:.85rem;
+    padding:.7rem 1.2rem; border-radius:999px;
+    box-shadow:0 10px 30px -8px rgba(45,212,191,.5);
+    opacity:0; pointer-events:none; transition:all .25s ease; z-index:50;
+  }
+  #toast.show{ opacity:1; transform:translate(-50%, 0); }
 
-    /* Loading spinner */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid #f3f3f3;
-      border-top: 3px solid #4facfe;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin-right: 10px;
-    }
+  footer{ margin-top:1.5rem; color:#4d5972; font-size:.75rem; text-align:center; }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
+  @media (max-width:640px){
+    .main-container{ flex-direction:column; }
+    .panel.search, .panel.calc{ flex:1 1 auto; width:100%; }
+  }
 
-    /* Autocomplete suggestions */
-    .autocomplete-suggestions {
-      position: absolute;
-      background-color: #1c2b3a;
-      border: 1px solid #4facfe;
-      border-radius: 8px;
-      max-height: 200px;
-      overflow-y: auto;
-      width: 100%;
-      z-index: 1000;
-      display: none;
-    }
-
-    .autocomplete-suggestions div {
-      padding: 10px;
-      cursor: pointer;
-      border-bottom: 1px solid #333;
-    }
-
-    .autocomplete-suggestions div:hover {
-      background-color: #4facfe;
-      color: white;
-    }
-
-    .autocomplete-container {
-      position: relative;
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-      body {
-        padding: 1rem;
-      }
-      .main-container {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-      }
-      .container, .calculator {
-        width: 100%;
-        max-width: 100%;
-      }
-      .nav-container {
-        flex-direction: column;
-        align-items: center;
-      }
-      .nav-container .nav-button {
-        min-width: 200px;
-      }
-    }
-
-    /* Accessibility improvements */
-    button:focus, .nav-button:focus, input:focus {
-      outline: 2px solid #4facfe;
-      outline-offset: 2px;
-    }
-
-    /* Better text formatting in results */
-    .result p, .calc-result p {
-      margin: 0.5rem 0;
-      line-height: 1.5;
-    }
-  </style>
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
 </head>
 <body>
-  <!-- Logo -->
-  <div class="logo-container">
-    <img src="your-logo.png" alt="RUV Finder Logo" class="glow-logo" />
-  </div>
 
-  <!-- Navigation Buttons -->
-  <div class="nav-container">
-    <a href="ruvfinder.html" class="nav-button">Go to RUV FINDER</a>
-    <a href="Misc.html" class="nav-button">Go to Miscellaneous</a>
-    <a href="index.html" class="nav-button">Go to Calculator</a>
+<div class="brand">
+  <img src="your-logo.png" alt="" class="glow-logo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-mark',textContent:'CS'}))">
+  <div class="brand-text">
+    <strong>CSTools</strong>
+    <span>RVS code &amp; unit lookup</span>
   </div>
-    
-  <!-- Main App -->
-  <div class="main-container">
-    <div class="container">
-      <h1>CSTools RUV FINDER</h1>
-      <label for="codeInput" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Enter RVS Code:</label>
+</div>
+
+<div class="nav-container">
+  <a href="ruvfinder.html" class="nav-button current">RUV Finder</a>
+  <a href="Misc.html" class="nav-button">Miscellaneous</a>
+  <a href="index.html" class="nav-button">Calculator</a>
+</div>
+
+<div class="main-container">
+
+  <div class="panel search">
+    <h1>RUV Finder</h1>
+    <p class="sub">Look up an RVS code to see its description, unit value, and category.</p>
+
+    <div class="field">
+      <label for="codeInput">RVS code</label>
       <div class="autocomplete-container">
-        <input type="text" id="codeInput" placeholder="Enter rvs code..." aria-describedby="result" />
+        <input type="text" id="codeInput" placeholder="e.g. 12345" autocomplete="off" aria-describedby="result">
         <div id="suggestions" class="autocomplete-suggestions"></div>
       </div>
-      <button onclick="searchCode()">Search</button>
-      <div class="result" id="result" role="region" aria-live="polite"></div>
     </div>
-
-    <div class="calculator">
-      <h2>Unit Multiplier 2026</h2>
-      <div class="calc-buttons">
-        <button onclick="multiplyUnit(155)">Ward / Out-Patient- OR x 155</button>
-        <button onclick="multiplyUnit(160)">Semi Private x 160</button>
-        <button onclick="multiplyUnit(165)">Private x 165</button>
-        <button onclick="multiplyUnit(170)">Suite/Nursery/ICU x 170</button>
-      </div>
-      <div class="calc-result" id="calcResult" role="region" aria-live="polite"></div>
-      <button onclick="copyResult('calcResult')">Copy Result</button>
-    </div>
+    <button class="primary" onclick="searchCode()">Search</button>
+    <div class="result-card" id="result" role="region" aria-live="polite"></div>
   </div>
 
-  <script>
-    let data = {};
-    let currentUnit = null;
-    let codes = []; // Array of available codes for autocomplete
+  <div class="panel calc">
+    <h2>Unit Multiplier 2026</h2>
+    <p class="sub">Search a code first, then apply the room-type multiplier.</p>
+    <div class="calc-buttons">
+      <button onclick="multiplyUnit(155)">Ward / OP <span class="mult">× 155</span></button>
+      <button onclick="multiplyUnit(160)">Semi-Private <span class="mult">× 160</span></button>
+      <button onclick="multiplyUnit(165)">Private <span class="mult">× 165</span></button>
+      <button onclick="multiplyUnit(170)">Suite / Nursery / ICU <span class="mult">× 170</span></button>
+    </div>
+    <div class="result-card calc-result" id="calcResult" role="region" aria-live="polite"></div>
+    <button class="ghost" onclick="copyResult('calcResult')">Copy result</button>
+  </div>
 
-    async function loadData() {
-      try {
-        const response = await fetch('data.json');
-        data = await response.json();
-        codes = Object.keys(data); // Extract codes for suggestions
-      } catch (error) {
-        document.getElementById("result").innerHTML = '<p>Error loading data.</p>';
-      }
+</div>
+
+<footer>CSTools RUV Finder</footer>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+  let data = {};
+  let currentUnit = null;
+  let codes = [];
+
+  async function loadData(){
+    const resultDiv = document.getElementById('result');
+    try {
+      const response = await fetch('data.json');
+      data = await response.json();
+      codes = Object.keys(data);
+    } catch (error) {
+      resultDiv.classList.add('show');
+      resultDiv.innerHTML = '<p class="empty-note">Could not load data.json. Make sure it sits next to this file.</p>';
+    }
+  }
+
+  function searchCode(code = null){
+    const inputCode = code || document.getElementById('codeInput').value.trim();
+    const resultDiv = document.getElementById('result');
+    const calcResultDiv = document.getElementById('calcResult');
+    calcResultDiv.classList.remove('show');
+    calcResultDiv.innerHTML = '';
+    currentUnit = null;
+    document.getElementById('suggestions').style.display = 'none';
+
+    if (!inputCode){
+      resultDiv.classList.remove('show');
+      resultDiv.innerHTML = '';
+      return;
     }
 
-    function searchCode(code = null) {
-      const inputCode = code || document.getElementById("codeInput").value.trim();
-      const resultDiv = document.getElementById("result");
-      const calcResultDiv = document.getElementById("calcResult");
-      calcResultDiv.innerHTML = '';
-      currentUnit = null;
-      document.getElementById("suggestions").style.display = 'none'; // Hide suggestions
+    resultDiv.classList.add('show');
+    resultDiv.innerHTML = '<div class="loading"><span class="spinner"></span>Searching…</div>';
 
-      // Show loading animation
-      resultDiv.innerHTML = '<div class="loading"></div> Searching...';
-
-      setTimeout(() => {
-        if (data[inputCode]) {
-          const item = data[inputCode];
-          currentUnit = parseFloat(item.unit);
-          resultDiv.innerHTML = `
-            <p><strong>Description:</strong> ${item.description}</p>
-            <p><strong>Unit:</strong> ${item.unit}</p>
-            <p><strong>Category:</strong> ${item.category}</p>
-            <p><strong>Subcategory:</strong> ${item.subCategory}</p>
-          `;
-        } else {
-          resultDiv.innerHTML = '<p>No data found for this code.</p>';
-        }
-      }, 500);
-    }
-
-    function multiplyUnit(multiplier) {
-      const calcResultDiv = document.getElementById("calcResult");
-      if (currentUnit !== null) {
-        const result = currentUnit * multiplier;
-        calcResultDiv.innerHTML = `<p><strong>${currentUnit} × ${multiplier} = ${Math.trunc(result)}</strong></p>`;
+    setTimeout(() => {
+      if (data[inputCode]) {
+        const item = data[inputCode];
+        currentUnit = parseFloat(item.unit);
+        resultDiv.innerHTML = '<div class="result-rows">' +
+          resultRow('Description', item.description) +
+          resultRow('Unit', item.unit) +
+          resultRow('Category', item.category) +
+          resultRow('Subcategory', item.subCategory) +
+          '</div>';
       } else {
-        calcResultDiv.innerHTML = `<p>Please search a code first.</p>`;
+        resultDiv.innerHTML = '<p class="empty-note">No data found for this code.</p>';
       }
+    }, 400);
+  }
+
+  function resultRow(label, value){
+    return `<div class="result-row"><span>${label}</span><span class="val">${value ?? '—'}</span></div>`;
+  }
+
+  function multiplyUnit(multiplier){
+    const calcResultDiv = document.getElementById('calcResult');
+    calcResultDiv.classList.add('show');
+    if (currentUnit !== null){
+      const result = Math.trunc(currentUnit * multiplier);
+      calcResultDiv.innerHTML = `<div class="calc-answer">${currentUnit} <span class="eq">×</span> ${multiplier} <span class="eq">=</span> ${result.toLocaleString('en-PH')}</div>`;
+    } else {
+      calcResultDiv.innerHTML = '<p class="empty-note">Search a code first.</p>';
     }
+  }
 
-    function copyResult(id) {
-      const resultText = document.getElementById(id).innerText;
-      navigator.clipboard.writeText(resultText).then(() => alert('Copied!'));
-    }
+  function showToast(msg){
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    clearTimeout(showToast._tid);
+    showToast._tid = setTimeout(() => t.classList.remove('show'), 1800);
+  }
 
-    // Autocomplete functionality
-    document.getElementById('codeInput').addEventListener('input', function() {
-      const query = this.value.trim().toLowerCase();
-      const suggestionsDiv = document.getElementById('suggestions');
-      suggestionsDiv.innerHTML = '';
+  function copyResult(id){
+    const el = document.getElementById(id);
+    const text = el.innerText.trim();
+    if (!text){ showToast('Nothing to copy yet'); return; }
+    navigator.clipboard.writeText(text).then(() => showToast('Result copied'))
+      .catch(() => showToast('Could not copy'));
+  }
 
-      if (query.length > 0) {
-        const matches = codes.filter(code => code.toLowerCase().includes(query)).slice(0, 5); // Limit to 5 suggestions
-        if (matches.length > 0) {
-          matches.forEach(match => {
-            const div = document.createElement('div');
-            div.textContent = match;
-            div.onclick = () => {
-              document.getElementById('codeInput').value = match;
-              searchCode(match);
-            };
-            suggestionsDiv.appendChild(div);
-          });
-          suggestionsDiv.style.display = 'block';
-        } else {
-          suggestionsDiv.style.display = 'none';
-        }
+  // Autocomplete
+  document.getElementById('codeInput').addEventListener('input', function(){
+    const query = this.value.trim().toLowerCase();
+    const suggestionsDiv = document.getElementById('suggestions');
+    suggestionsDiv.innerHTML = '';
+
+    if (query.length > 0){
+      const matches = codes.filter(code => code.toLowerCase().includes(query)).slice(0, 6);
+      if (matches.length > 0){
+        matches.forEach(match => {
+          const div = document.createElement('div');
+          div.textContent = match;
+          div.onclick = () => {
+            document.getElementById('codeInput').value = match;
+            searchCode(match);
+          };
+          suggestionsDiv.appendChild(div);
+        });
+        suggestionsDiv.style.display = 'block';
       } else {
         suggestionsDiv.style.display = 'none';
       }
-    });
+    } else {
+      suggestionsDiv.style.display = 'none';
+    }
+  });
 
-    // Hide suggestions on click outside
-    document.addEventListener('click', function(e) {
-      if (!document.querySelector('.autocomplete-container').contains(e.target)) {
-        document.getElementById('suggestions').style.display = 'none';
-      }
-    });
+  document.addEventListener('click', function(e){
+    if (!document.querySelector('.autocomplete-container').contains(e.target)){
+      document.getElementById('suggestions').style.display = 'none';
+    }
+  });
 
-    // Enter key to search
-    document.getElementById('codeInput').addEventListener('keydown', function(event) {
-      if (event.key === 'Enter') {
-        searchCode();
-      }
-    });
+  document.getElementById('codeInput').addEventListener('keydown', function(event){
+    if (event.key === 'Enter') searchCode();
+  });
 
-    window.onload = loadData;
-  </script>
+  window.onload = loadData;
+</script>
 </body>
 </html>
