@@ -624,8 +624,7 @@
 
   function buildCopyText(title, lines){
     const maxLabel = Math.max(...lines.map(l => l[0].length));
-    const body = lines.map(([label, value]) => `${(label + ':').padEnd(maxLabel + 2)}${value}`).join('\n');
-    return `${title}\n${'-'.repeat(title.length)}\n${body}`;
+    return lines.map(([label, value]) => `${(label + ':').padEnd(maxLabel + 2)}${value}`).join('\n');
   }
 
   function flashResult(el){
@@ -756,7 +755,7 @@
 
     if (avail <= limit){
       out.innerHTML = '<p class="empty-note">Fully within the remaining limit — no excess and no patient share.</p>';
-      resultTexts[out.id] = 'Scheme 2: 10k OP Limit 80/20\nFully within the remaining limit — no excess and no patient share.';
+      resultTexts[out.id] = 'Fully within the remaining limit — no excess and no patient share.';
       flashResult(out);
       return;
     }
@@ -1006,6 +1005,19 @@
       '</div>';
     flashResult(out);
   }
+
+  function toggleTheme(){
+    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('cstools-theme', next);
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.setAttribute('aria-pressed', next === 'light' ? 'true' : 'false');
+  }
+  (function syncThemeButton(){
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'light' ? 'true' : 'false');
+  })();
 
   buildTabs();
   showScheme('scheme1');
