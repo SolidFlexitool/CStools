@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSTools RUV Finder</title>
+<script>
+  (function(){
+    var saved = localStorage.getItem('cstools-theme');
+    var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <style>
   :root{
     --bg:            #0a0f1c;
@@ -16,8 +23,25 @@
     --teal-dim:      #1a3a37;
     --amber:         #f5a623;
     --danger:        #ef4444;
+    --surface:       #0d1626;
     --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"]{
+    --bg:            #f5f7fb;
+    --panel:         #ffffff;
+    --panel-alt:     #eef2f9;
+    --line:          #dbe3ef;
+    --text:          #10182b;
+    --muted:         #5b6b84;
+    --teal:          #0f9c8f;
+    --teal-dim:      #d9f5f1;
+    --amber:         #b5790f;
+    --danger:        #dc2626;
+    --surface:       #eef2f9;
+    color-scheme: light;
   }
 
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
@@ -37,10 +61,36 @@
     display:flex;
     flex-direction:column;
     align-items:center;
+    transition:background-color .3s ease, color .3s ease;
+  }
+
+  html[data-theme="light"] body{
+    background:
+      radial-gradient(1100px 600px at 15% -10%, #e2ecff 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, #dcf5ef 0%, transparent 55%),
+      var(--bg);
   }
 
   /* ---------- header ---------- */
-  .brand{ display:flex; align-items:center; gap:.65rem; margin-bottom:1.25rem; }
+  .topbar{
+    width:100%; max-width:900px;
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:1.25rem; gap:1rem;
+  }
+  .brand{ display:flex; align-items:center; gap:.65rem; }
+  .theme-toggle{
+    flex:0 0 auto; width:42px; height:42px; border-radius:12px;
+    background:var(--panel-alt); border:1px solid var(--line); color:var(--text);
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--teal); transform:translateY(-1px); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .theme-toggle svg{ width:18px; height:18px; }
+  .theme-toggle .icon-sun{ display:none; }
+  .theme-toggle .icon-moon{ display:block; }
+  html[data-theme="light"] .theme-toggle .icon-sun{ display:block; }
+  html[data-theme="light"] .theme-toggle .icon-moon{ display:none; }
   .brand-mark{
     width:38px; height:38px; border-radius:10px;
     background:linear-gradient(145deg, var(--teal), #1b8f82);
@@ -87,10 +137,10 @@
   .autocomplete-container{ position:relative; }
   input[type="text"]{
     width:100%; padding:.8rem .9rem; font-size:.95rem; font-family:var(--mono);
-    border:1px solid var(--line); border-radius:10px; background:#0d1626; color:var(--text);
-    transition:border-color .15s ease, box-shadow .15s ease;
+    border:1px solid var(--line); border-radius:10px; background:var(--surface); color:var(--text);
+    transition:border-color .15s ease, box-shadow .15s ease, background-color .2s ease;
   }
-  input::placeholder{ color:#54617a; font-family:var(--sans); }
+  input::placeholder{ color:var(--muted); font-family:var(--sans); }
   input:focus{ outline:none; border-color:var(--teal); box-shadow:0 0 0 3px rgba(45,212,191,.15); }
 
   .autocomplete-suggestions{
@@ -128,7 +178,7 @@
   .calc-buttons button:hover .mult{ color:inherit; }
 
   .result-card{
-    margin-top:1.1rem; background:#0d1626; border:1px solid var(--line); border-radius:14px;
+    margin-top:1.1rem; background:var(--surface); border:1px solid var(--line); border-radius:14px;
     padding:1rem 1.1rem; display:none; min-height:1rem;
   }
   .result-card.show{ display:block; animation:fadeIn .22s ease; }
@@ -164,7 +214,7 @@
   }
   #toast.show{ opacity:1; transform:translate(-50%, 0); }
 
-  footer{ margin-top:1.5rem; color:#4d5972; font-size:.75rem; text-align:center; }
+  footer{ margin-top:1.5rem; color:var(--muted); opacity:.75; font-size:.75rem; text-align:center; }
 
   @media (max-width:640px){
     .main-container{ flex-direction:column; }
@@ -178,12 +228,18 @@
 </head>
 <body>
 
-<div class="brand">
-  <img src="your-logo.png" alt="" class="glow-logo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-mark',textContent:'CS'}))">
-  <div class="brand-text">
-    <strong>CSTools</strong>
-    <span>RVS code &amp; unit lookup</span>
+<div class="topbar">
+  <div class="brand">
+    <img src="your-logo.png" alt="" class="glow-logo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-mark',textContent:'CS'}))">
+    <div class="brand-text">
+      <strong>CSTools</strong>
+      <span>RVS code &amp; unit lookup</span>
+    </div>
   </div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark or light mode" aria-pressed="false" onclick="toggleTheme()">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </button>
 </div>
 
 <div class="nav-container">
@@ -301,12 +357,43 @@
     showToast._tid = setTimeout(() => t.classList.remove('show'), 1800);
   }
 
+  function copyToClipboard(text){
+    return new Promise((resolve, reject) => {
+      if (navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(resolve).catch(() => legacyCopy(text, resolve, reject));
+      } else {
+        legacyCopy(text, resolve, reject);
+      }
+    });
+  }
+
+  function legacyCopy(text, resolve, reject){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    try {
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('execCommand copy failed'));
+    } catch (err){
+      document.body.removeChild(ta);
+      reject(err);
+    }
+  }
+
   function copyResult(id){
     const el = document.getElementById(id);
     const text = el.innerText.trim();
     if (!text){ showToast('Nothing to copy yet'); return; }
-    navigator.clipboard.writeText(text).then(() => showToast('Result copied'))
-      .catch(() => showToast('Could not copy'));
+    copyToClipboard(text).then(() => showToast('Result copied'))
+      .catch(() => showToast('Could not copy — select the text manually'));
   }
 
   // Autocomplete
@@ -345,6 +432,19 @@
   document.getElementById('codeInput').addEventListener('keydown', function(event){
     if (event.key === 'Enter') searchCode();
   });
+
+  function toggleTheme(){
+    const current = document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+    const next = current === 'light' ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('cstools-theme', next);
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.setAttribute('aria-pressed', next === 'light' ? 'true' : 'false');
+  }
+  (function syncThemeButton(){
+    const btn = document.getElementById('themeToggle');
+    if (btn) btn.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'light' ? 'true' : 'false');
+  })();
 
   window.onload = loadData;
 </script>
