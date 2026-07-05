@@ -162,44 +162,33 @@
     margin:0; color:var(--muted); font-size:.85rem;
   }
 
-  /* ---------- tabs ---------- */
-  .tabbar{
-    display:flex;
-    gap:.4rem;
-    overflow-x:auto;
+  /* ---------- scheme selector ---------- */
+  .scheme-select-wrap{
     padding:1.25rem 1.5rem .75rem;
-    scrollbar-width:thin;
-    scrollbar-color:var(--line) transparent;
   }
-  .tabbar::-webkit-scrollbar{ height:6px; }
-  .tabbar::-webkit-scrollbar-thumb{ background:var(--line); border-radius:6px; }
-
-  .tab{
-    flex:0 0 auto;
-    background:var(--panel-alt);
+  select#schemeSelect{
+    width:100%;
+    appearance:none;
+    -webkit-appearance:none;
+    background:var(--panel-alt)
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238b98ac' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'></polyline></svg>")
+      no-repeat right .9rem center / 18px 18px;
     border:1px solid var(--line);
-    color:var(--muted);
-    padding:.55rem .9rem;
-    border-radius:10px;
-    font-size:.78rem;
+    color:var(--text);
+    font-family:var(--sans);
+    font-size:.88rem;
     font-weight:600;
-    white-space:nowrap;
+    padding:.85rem 2.6rem .85rem 1rem;
+    border-radius:12px;
     cursor:pointer;
-    transition:all .16s ease;
+    transition:border-color .16s ease, background .16s ease;
   }
-  .tab .num{
-    font-family:var(--mono);
-    color:var(--teal);
-    margin-right:.35rem;
+  select#schemeSelect:hover{ border-color:#3a4d70; }
+  select#schemeSelect:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  select#schemeSelect option{
+    background:var(--panel);
+    color:var(--text);
   }
-  .tab:hover{ border-color:#3a4d70; color:var(--text); }
-  .tab.active{
-    background:linear-gradient(145deg, var(--teal), #17847a);
-    border-color:transparent;
-    color:#03211d;
-  }
-  .tab.active .num{ color:#03211d; }
-  .tab:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
 
   /* ---------- scheme panel ---------- */
   .scheme{
@@ -384,10 +373,12 @@
     <p>Pick a scheme below, enter the amount, and the split updates as you type.</p>
   </div>
 
-  <div class="tabbar" role="tablist" aria-label="Coverage schemes" id="tabbar"></div>
+  <div class="scheme-select-wrap">
+    <select id="schemeSelect" aria-label="Select a coverage scheme" onchange="showScheme(this.value)"></select>
+  </div>
 
   <!-- Scheme 1 -->
-  <div class="scheme" id="scheme1" role="tabpanel" aria-labelledby="tab-scheme1">
+  <div class="scheme" id="scheme1">
     <p class="scheme-desc">First 7,500 is fully covered. Anything above that excess is split 70% Flexicare / 30% patient.</p>
     <div class="field">
       <label for="amount1">Procedure amount</label>
@@ -408,7 +399,7 @@
   </div>
 
   <!-- Scheme 2 -->
-  <div class="scheme" id="scheme2" role="tabpanel" aria-labelledby="tab-scheme2">
+  <div class="scheme" id="scheme2">
     <p class="scheme-desc">Once the 10,000 outpatient limit is used up, any excess is split 80% Flexicare / 20% patient.</p>
     <div class="field">
       <label for="remainingLimit">Remaining limit (0 if none left)</label>
@@ -434,7 +425,7 @@
   </div>
 
   <!-- Scheme 3 -->
-  <div class="scheme" id="scheme3" role="tabpanel" aria-labelledby="tab-scheme3">
+  <div class="scheme" id="scheme3">
     <p class="scheme-desc">First 5,000 is fully covered. Anything above that excess is split 50% Flexicare / 50% patient.</p>
     <div class="field">
       <label for="amount3">Procedure amount</label>
@@ -450,7 +441,7 @@
   </div>
 
   <!-- Scheme 4 -->
-  <div class="scheme" id="scheme4" role="tabpanel" aria-labelledby="tab-scheme4">
+  <div class="scheme" id="scheme4">
     <p class="scheme-desc">First 2,000 is fully covered. Anything above that excess is split 70% Flexicare / 30% patient.</p>
     <div class="field">
       <label for="amount4">Procedure amount</label>
@@ -470,7 +461,7 @@
   </div>
 
   <!-- Scheme 5 -->
-  <div class="scheme" id="scheme5" role="tabpanel" aria-labelledby="tab-scheme5">
+  <div class="scheme" id="scheme5">
     <p class="scheme-desc">First 5,000 is fully covered. Anything above that excess is split 70% Flexicare / 30% patient.</p>
     <div class="field">
       <label for="amount5">Procedure amount</label>
@@ -490,7 +481,7 @@
   </div>
 
   <!-- Scheme 6: incremental -->
-  <div class="scheme" id="scheme6" role="tabpanel" aria-labelledby="tab-scheme6">
+  <div class="scheme" id="scheme6">
     <p class="scheme-desc">Incremental fee: 20% of the gross bill after removing room &amp; board, disapproved charges, and any credit memo.</p>
     <div class="field">
       <label for="grossBill">Gross hospital bill</label>
@@ -525,7 +516,7 @@
   </div>
 
   <!-- Scheme 7: 50/50 -->
-  <div class="scheme" id="scheme7" role="tabpanel" aria-labelledby="tab-scheme7">
+  <div class="scheme" id="scheme7">
     <p class="scheme-desc">Straight 50% Flexicare / 50% patient split on the full procedure amount — no excess threshold.</p>
     <div class="field">
       <label for="amount7">Procedure amount</label>
@@ -545,7 +536,7 @@
   </div>
 
   <!-- Scheme 8: 70/30 -->
-  <div class="scheme" id="scheme8" role="tabpanel" aria-labelledby="tab-scheme8">
+  <div class="scheme" id="scheme8">
     <p class="scheme-desc">Straight 70% Flexicare / 30% patient split on the full procedure amount — no excess threshold.</p>
     <div class="field">
       <label for="amount8">Procedure amount</label>
@@ -581,38 +572,21 @@
     { id:'scheme8', label:'70/30 Sharing' },
   ];
 
-  function buildTabs(){
-    const bar = document.getElementById('tabbar');
+  function populateSchemeSelect(){
+    const select = document.getElementById('schemeSelect');
     SCHEMES.forEach((s, i) => {
-      const btn = document.createElement('button');
-      btn.className = 'tab';
-      btn.id = 'tab-' + s.id;
-      btn.type = 'button';
-      btn.role = 'tab';
-      btn.setAttribute('aria-controls', s.id);
-      btn.innerHTML = `<span class="num">${String(i+1).padStart(2,'0')}</span>${s.label}`;
-      btn.addEventListener('click', () => showScheme(s.id));
-      btn.addEventListener('keydown', (e) => {
-        if (e.key === 'ArrowRight' || e.key === 'ArrowLeft'){
-          e.preventDefault();
-          const dir = e.key === 'ArrowRight' ? 1 : -1;
-          const idx = SCHEMES.findIndex(x => x.id === s.id);
-          const next = SCHEMES[(idx + dir + SCHEMES.length) % SCHEMES.length];
-          showScheme(next.id);
-          document.getElementById('tab-' + next.id).focus();
-        }
-      });
-      bar.appendChild(btn);
+      const opt = document.createElement('option');
+      opt.value = s.id;
+      opt.textContent = `Scheme ${i+1}: ${s.label}`;
+      select.appendChild(opt);
     });
   }
 
   function showScheme(id){
     document.querySelectorAll('.scheme').forEach(div => div.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
     document.getElementById(id).classList.add('active');
-    const tab = document.getElementById('tab-' + id);
-    tab.classList.add('active');
-    tab.setAttribute('aria-selected','true');
+    const select = document.getElementById('schemeSelect');
+    if (select.value !== id) select.value = id;
   }
 
   const resultTexts = {};
@@ -1019,7 +993,7 @@
     if (btn) btn.setAttribute('aria-pressed', document.documentElement.getAttribute('data-theme') === 'light' ? 'true' : 'false');
   })();
 
-  buildTabs();
+  populateSchemeSelect();
   showScheme('scheme1');
 </script>
 </body>
