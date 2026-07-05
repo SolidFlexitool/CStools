@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSTools Calculator</title>
+<script>
+  (function(){
+    var saved = localStorage.getItem('cstools-theme');
+    var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+    document.documentElement.setAttribute('data-theme', theme);
+  })();
+</script>
 <style>
   :root{
     --bg:            #0a0f1c;
@@ -17,9 +24,27 @@
     --amber:         #f5a623;
     --amber-dim:     #3a2c14;
     --danger:        #ef4444;
+    --surface:       #0d1626;
     --radius:        14px;
     --mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
     --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"]{
+    --bg:            #f5f7fb;
+    --panel:         #ffffff;
+    --panel-alt:     #eef2f9;
+    --line:          #dbe3ef;
+    --text:          #10182b;
+    --muted:         #5b6b84;
+    --teal:          #0f9c8f;
+    --teal-dim:      #d9f5f1;
+    --amber:         #b5790f;
+    --amber-dim:     #fbe8cc;
+    --danger:        #dc2626;
+    --surface:       #eef2f9;
+    color-scheme: light;
   }
 
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap');
@@ -39,15 +64,46 @@
     display:flex;
     flex-direction:column;
     align-items:center;
+    transition:background-color .3s ease, color .3s ease;
+  }
+
+  html[data-theme="light"] body{
+    background:
+      radial-gradient(1100px 600px at 15% -10%, #e2ecff 0%, transparent 60%),
+      radial-gradient(900px 500px at 110% 10%, #dcf5ef 0%, transparent 55%),
+      var(--bg);
   }
 
   /* ---------- header ---------- */
+  .topbar{
+    width:100%; max-width:900px;
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:1.25rem;
+    gap:1rem;
+  }
   .brand{
     display:flex;
     align-items:center;
     gap:.65rem;
-    margin-bottom:1.25rem;
   }
+  .theme-toggle{
+    flex:0 0 auto;
+    width:42px; height:42px;
+    border-radius:12px;
+    background:var(--panel-alt);
+    border:1px solid var(--line);
+    color:var(--text);
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer;
+    transition:border-color .15s ease, transform .15s ease, background .15s ease;
+  }
+  .theme-toggle:hover{ border-color:var(--teal); transform:translateY(-1px); }
+  .theme-toggle:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .theme-toggle svg{ width:18px; height:18px; }
+  .theme-toggle .icon-sun{ display:none; }
+  .theme-toggle .icon-moon{ display:block; }
+  html[data-theme="light"] .theme-toggle .icon-sun{ display:block; }
+  html[data-theme="light"] .theme-toggle .icon-moon{ display:none; }
   .brand-mark{
     width:38px; height:38px;
     border-radius:10px;
@@ -174,16 +230,16 @@
   }
   input[type="number"], input[type="text"]{
     width:100%;
-    padding:.8rem .9rem .8rem 1.9rem;
+    padding:.8rem .9rem;
     font-size:.95rem;
     font-family:var(--mono);
     border:1px solid var(--line);
     border-radius:10px;
-    background:#0d1626;
+    background:var(--surface);
     color:var(--text);
-    transition:border-color .15s ease, box-shadow .15s ease;
+    transition:border-color .15s ease, box-shadow .15s ease, background-color .2s ease;
   }
-  input::placeholder{ color:#54617a; font-family:var(--sans); }
+  input::placeholder{ color:var(--muted); font-family:var(--sans); }
   input:focus{
     outline:none;
     border-color:var(--teal);
@@ -199,9 +255,10 @@
     display:flex; align-items:center; gap:.55rem;
     margin:1rem 0 1.2rem;
     padding:.65rem .8rem;
-    background:#0d1626;
+    background:var(--surface);
     border:1px solid var(--line);
     border-radius:10px;
+    transition:background-color .2s ease;
   }
   .checkbox-row input{ width:17px; height:17px; accent-color:var(--teal); cursor:pointer; }
   .checkbox-row label{ font-size:.83rem; color:var(--text); cursor:pointer; user-select:none; }
@@ -233,11 +290,12 @@
   /* ---------- result ---------- */
   .result-card{
     margin-top:1.25rem;
-    background:#0d1626;
+    background:var(--surface);
     border:1px solid var(--line);
     border-radius:14px;
     padding:1.1rem 1.1rem 1.3rem;
     display:none;
+    transition:background-color .2s ease;
   }
   .result-card.show{ display:block; animation:fadeIn .25s ease; }
 
@@ -284,7 +342,7 @@
   #toast.show{ opacity:1; transform:translate(-50%, 0); }
 
   footer{
-    margin-top:1.5rem; color:#4d5972; font-size:.75rem; text-align:center;
+    margin-top:1.5rem; color:var(--muted); opacity:.75; font-size:.75rem; text-align:center;
   }
 
   @media (max-width:600px){
@@ -300,12 +358,18 @@
 </head>
 <body>
 
-<div class="brand">
-  <img src="your-logo.png" alt="" class="glow-logo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-mark',textContent:'CS'}))">
-  <div class="brand-text">
-    <strong>CSTools</strong>
-    <span>Coverage &amp; billing calculator</span>
+<div class="topbar">
+  <div class="brand">
+    <img src="your-logo.png" alt="" class="glow-logo" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'brand-mark',textContent:'CS'}))">
+    <div class="brand-text">
+      <strong>CSTools</strong>
+      <span>Coverage &amp; billing calculator</span>
+    </div>
   </div>
+  <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark or light mode" aria-pressed="false" onclick="toggleTheme()">
+    <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>
+    <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+  </button>
 </div>
 
 <div class="nav-container">
@@ -327,7 +391,7 @@
     <p class="scheme-desc">First 7,500 is fully covered. Anything above that excess is split 70% Flexicare / 30% patient.</p>
     <div class="field">
       <label for="amount1">Procedure amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="amount1" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess1()">
       </div>
       <div class="field-error" id="amount1-error">Enter a valid, non-negative amount.</div>
@@ -348,13 +412,13 @@
     <p class="scheme-desc">Once the 10,000 outpatient limit is used up, any excess is split 80% Flexicare / 20% patient.</p>
     <div class="field">
       <label for="remainingLimit">Remaining limit (0 if none left)</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="remainingLimit" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess2()">
       </div>
     </div>
     <div class="field">
       <label for="availAmount">Total availed amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="availAmount" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess2()">
       </div>
     </div>
@@ -374,7 +438,7 @@
     <p class="scheme-desc">First 5,000 is fully covered. Anything above that excess is split 50% Flexicare / 50% patient.</p>
     <div class="field">
       <label for="amount3">Procedure amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="amount3" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess3()">
       </div>
     </div>
@@ -390,7 +454,7 @@
     <p class="scheme-desc">First 2,000 is fully covered. Anything above that excess is split 70% Flexicare / 30% patient.</p>
     <div class="field">
       <label for="amount4">Procedure amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="amount4" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess4()">
       </div>
     </div>
@@ -410,7 +474,7 @@
     <p class="scheme-desc">First 5,000 is fully covered. Anything above that excess is split 70% Flexicare / 30% patient.</p>
     <div class="field">
       <label for="amount5">Procedure amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="amount5" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess5()">
       </div>
     </div>
@@ -430,25 +494,25 @@
     <p class="scheme-desc">Incremental fee: 20% of the gross bill after removing room &amp; board, disapproved charges, and any credit memo.</p>
     <div class="field">
       <label for="grossBill">Gross hospital bill</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="grossBill" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess6()">
       </div>
     </div>
     <div class="field">
       <label for="roomBoard">Total room and board</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="roomBoard" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess6()">
       </div>
     </div>
     <div class="field">
       <label for="disapproved">Disapproved charges</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="disapproved" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess6()">
       </div>
     </div>
     <div class="field">
       <label for="creditMemo">Credit memo (if any)</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="creditMemo" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess6()">
       </div>
     </div>
@@ -465,7 +529,7 @@
     <p class="scheme-desc">Straight 50% Flexicare / 50% patient split on the full procedure amount — no excess threshold.</p>
     <div class="field">
       <label for="amount7">Procedure amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="amount7" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess7()">
       </div>
     </div>
@@ -485,7 +549,7 @@
     <p class="scheme-desc">Straight 70% Flexicare / 30% patient split on the full procedure amount — no excess threshold.</p>
     <div class="field">
       <label for="amount8">Procedure amount</label>
-      <div class="input-wrap"><span class="prefix">₱</span>
+      <div class="input-wrap">
         <input type="number" id="amount8" min="0" placeholder="0.00" inputmode="decimal" oninput="calculateExcess8()">
       </div>
     </div>
@@ -551,9 +615,17 @@
     tab.setAttribute('aria-selected','true');
   }
 
+  const resultTexts = {};
+
   function fmt(n){
     if (isNaN(n)) n = 0;
-    return '₱' + n.toLocaleString('en-PH', { minimumFractionDigits:2, maximumFractionDigits:2 });
+    return n.toLocaleString('en-PH', { minimumFractionDigits:2, maximumFractionDigits:2 });
+  }
+
+  function buildCopyText(title, lines){
+    const maxLabel = Math.max(...lines.map(l => l[0].length));
+    const body = lines.map(([label, value]) => `${(label + ':').padEnd(maxLabel + 2)}${value}`).join('\n');
+    return `${title}\n${'-'.repeat(title.length)}\n${body}`;
   }
 
   function flashResult(el){
@@ -586,12 +658,42 @@
     showToast._tid = setTimeout(() => t.classList.remove('show'), 1800);
   }
 
+  function copyToClipboard(text){
+    return new Promise((resolve, reject) => {
+      if (navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text).then(resolve).catch(() => legacyCopy(text, resolve, reject));
+      } else {
+        legacyCopy(text, resolve, reject);
+      }
+    });
+  }
+
+  function legacyCopy(text, resolve, reject){
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.top = '-9999px';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.focus();
+    ta.select();
+    ta.setSelectionRange(0, text.length);
+    try {
+      const ok = document.execCommand('copy');
+      document.body.removeChild(ta);
+      ok ? resolve() : reject(new Error('execCommand copy failed'));
+    } catch (err){
+      document.body.removeChild(ta);
+      reject(err);
+    }
+  }
+
   function copyResult(id){
-    const el = document.getElementById(id);
-    const text = el.innerText.trim();
+    const text = (resultTexts[id] || '').trim();
     if (!text){ showToast('Nothing to copy yet'); return; }
-    navigator.clipboard.writeText(text).then(() => showToast('Result copied'))
-      .catch(() => showToast('Could not copy'));
+    copyToClipboard(text).then(() => showToast('Result copied'))
+      .catch(() => showToast('Could not copy — select the text manually'));
   }
 
   function resetScheme(n){
@@ -601,6 +703,7 @@
     const result = document.getElementById('scheme' + n + 'Result');
     result.classList.remove('show');
     result.innerHTML = '';
+    resultTexts[result.id] = '';
   }
 
   /* ---------- Scheme 1 ---------- */
@@ -608,7 +711,7 @@
     const val = parseFloat(document.getElementById('amount1').value) || 0;
     const withDiscount = document.getElementById('discountCheckbox').checked;
     const out = document.getElementById('scheme1Result');
-    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const excess = val > 7500 ? val - 7500 : 0;
     const flexicare70 = excess * 0.70;
@@ -622,9 +725,18 @@
     const total = covered + payable;
     const covPct = total ? (covered/total*100) : 100;
 
+    const lines = [
+      ['Excess above 7,500', fmt(excess)],
+      ['70% Flexicare share', fmt(flexicare70)],
+      ['30% patient share', fmt(patient30)],
+    ];
+    if (withDiscount) lines.push(['Senior/PWD discount (20% of amount)', '-' + fmt(discount)]);
+    lines.push(['Final patient payable', fmt(payable)], ['Total covered', fmt(covered)]);
+    resultTexts[out.id] = buildCopyText('Scheme 1: 7,500 Excess 70/30', lines);
+
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
-      row('Excess above ₱7,500', fmt(excess)) +
+      row('Excess above 7,500', fmt(excess)) +
       row('70% Flexicare share', fmt(flexicare70)) +
       row('30% patient share', fmt(patient30)) +
       (withDiscount ? row('Senior/PWD discount (20% of amount)', '−' + fmt(discount)) : '') +
@@ -640,10 +752,11 @@
     const avail = parseFloat(document.getElementById('availAmount').value) || 0;
     const withDiscount = document.getElementById('discountCheckbox2')?.checked;
     const out = document.getElementById('scheme2Result');
-    if (avail <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (avail <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     if (avail <= limit){
       out.innerHTML = '<p class="empty-note">Fully within the remaining limit — no excess and no patient share.</p>';
+      resultTexts[out.id] = 'Scheme 2: 10k OP Limit 80/20\nFully within the remaining limit — no excess and no patient share.';
       flashResult(out);
       return;
     }
@@ -659,6 +772,15 @@
     const covered = limit + flexicare80;
     const total = covered + payable;
     const covPct = total ? (covered/total*100) : 100;
+
+    const lines = [
+      ['Excess from remaining limit', fmt(excess)],
+      ['80% Flexicare share', fmt(flexicare80)],
+      ['20% patient share', fmt(patient20)],
+    ];
+    if (withDiscount) lines.push(['Senior/PWD discount (20% of amount)', '-' + fmt(discount)]);
+    lines.push(['Final patient payable', fmt(payable)], ['Total covered', fmt(covered)]);
+    resultTexts[out.id] = buildCopyText('Scheme 2: 10k OP Limit 80/20', lines);
 
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
@@ -676,7 +798,7 @@
   function calculateExcess3(){
     const val = parseFloat(document.getElementById('amount3').value) || 0;
     const out = document.getElementById('scheme3Result');
-    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const excess = val > 5000 ? val - 5000 : 0;
     const patientShare = excess * 0.5;
@@ -684,9 +806,16 @@
     const total = covered + patientShare;
     const covPct = total ? (covered/total*100) : 100;
 
+    const lines = [
+      ['Excess above 5,000', fmt(excess)],
+      ['50% patient share', fmt(patientShare)],
+      ['Total covered (limit + 50% of excess)', fmt(covered)],
+    ];
+    resultTexts[out.id] = buildCopyText('Scheme 3: 5,000 Excess 50/50', lines);
+
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
-      row('Excess above ₱5,000', fmt(excess)) +
+      row('Excess above 5,000', fmt(excess)) +
       row('50% patient share', fmt(patientShare), 'payable') +
       row('Total covered (limit + 50% of excess)', fmt(covered), 'total') +
       '</div>';
@@ -698,7 +827,7 @@
     const val = parseFloat(document.getElementById('amount4').value) || 0;
     const withDiscount = document.getElementById('discountCheckbox4')?.checked;
     const out = document.getElementById('scheme4Result');
-    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const excess = val > 2000 ? val - 2000 : 0;
     const flexicare70 = excess * 0.70;
@@ -712,9 +841,18 @@
     const total = covered + payable;
     const covPct = total ? (covered/total*100) : 100;
 
+    const lines = [
+      ['Excess above 2,000', fmt(excess)],
+      ['70% Flexicare share', fmt(flexicare70)],
+      ['30% patient share', fmt(patient30)],
+    ];
+    if (withDiscount) lines.push(['Senior/PWD discount (20% of amount)', '-' + fmt(discount)]);
+    lines.push(['Final patient payable', fmt(payable)], ['Total covered', fmt(covered)]);
+    resultTexts[out.id] = buildCopyText('Scheme 4: 2,000 Excess 70/30', lines);
+
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
-      row('Excess above ₱2,000', fmt(excess)) +
+      row('Excess above 2,000', fmt(excess)) +
       row('70% Flexicare share', fmt(flexicare70)) +
       row('30% patient share', fmt(patient30)) +
       (withDiscount ? row('Senior/PWD discount (20% of amount)', '−' + fmt(discount)) : '') +
@@ -729,7 +867,7 @@
     const val = parseFloat(document.getElementById('amount5').value) || 0;
     const withDiscount = document.getElementById('discountCheckbox5')?.checked;
     const out = document.getElementById('scheme5Result');
-    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const excess = val > 5000 ? val - 5000 : 0;
     const flexicare70 = excess * 0.70;
@@ -743,9 +881,18 @@
     const total = covered + payable;
     const covPct = total ? (covered/total*100) : 100;
 
+    const lines = [
+      ['Excess above 5,000', fmt(excess)],
+      ['70% Flexicare share', fmt(flexicare70)],
+      ['30% patient share', fmt(patient30)],
+    ];
+    if (withDiscount) lines.push(['Senior/PWD discount (20% of amount)', '-' + fmt(discount)]);
+    lines.push(['Final patient payable', fmt(payable)], ['Total covered', fmt(covered)]);
+    resultTexts[out.id] = buildCopyText('Scheme 5: 5,000 Excess 70/30', lines);
+
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
-      row('Excess above ₱5,000', fmt(excess)) +
+      row('Excess above 5,000', fmt(excess)) +
       row('70% Flexicare share', fmt(flexicare70)) +
       row('30% patient share', fmt(patient30)) +
       (withDiscount ? row('Senior/PWD discount (20% of amount)', '−' + fmt(discount)) : '') +
@@ -762,10 +909,20 @@
     const dis = parseFloat(document.getElementById('disapproved').value) || 0;
     const credit = parseFloat(document.getElementById('creditMemo').value) || 0;
     const out = document.getElementById('scheme6Result');
-    if (gross <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (gross <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const net = gross - room - dis - credit;
     const fee = net * 0.20;
+
+    const lines = [
+      ['Gross hospital bill', fmt(gross)],
+      ['Less room & board', '-' + fmt(room)],
+      ['Less disapproved charges', '-' + fmt(dis)],
+      ['Less credit memo', '-' + fmt(credit)],
+      ['Net amount', fmt(net)],
+      ['Incremental fee (20% of net)', fmt(fee)],
+    ];
+    resultTexts[out.id] = buildCopyText('Scheme 6: Incremental Fee', lines);
 
     out.innerHTML = '<div class="result-rows">' +
       row('Gross hospital bill', fmt(gross)) +
@@ -783,7 +940,7 @@
     const val = parseFloat(document.getElementById('amount7').value) || 0;
     const withDiscount = document.getElementById('discountCheckbox7')?.checked;
     const out = document.getElementById('scheme7Result');
-    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const flexicare50 = val * 0.50;
     const patient50 = val * 0.50;
@@ -794,6 +951,14 @@
     }
     const total = flexicare50 + payable;
     const covPct = total ? (flexicare50/total*100) : 100;
+
+    const lines = [
+      ['50% Flexicare share', fmt(flexicare50)],
+      ['50% patient share', fmt(patient50)],
+    ];
+    if (withDiscount) lines.push(['Senior/PWD discount (20% of amount)', '-' + fmt(discount)]);
+    lines.push(['Final patient payable', fmt(payable)], ['Total covered by Flexicare', fmt(flexicare50)]);
+    resultTexts[out.id] = buildCopyText('Scheme 7: 50/50 Sharing', lines);
 
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
@@ -811,7 +976,7 @@
     const val = parseFloat(document.getElementById('amount8').value) || 0;
     const withDiscount = document.getElementById('discountCheckbox8')?.checked;
     const out = document.getElementById('scheme8Result');
-    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; return; }
+    if (val <= 0){ out.classList.remove('show'); out.innerHTML=''; resultTexts[out.id]=''; return; }
 
     const flexicare70 = val * 0.70;
     const patient30 = val * 0.30;
@@ -822,6 +987,14 @@
     }
     const total = flexicare70 + payable;
     const covPct = total ? (flexicare70/total*100) : 100;
+
+    const lines = [
+      ['70% Flexicare share', fmt(flexicare70)],
+      ['30% patient share', fmt(patient30)],
+    ];
+    if (withDiscount) lines.push(['Senior/PWD discount (20% of amount)', '-' + fmt(discount)]);
+    lines.push(['Final patient payable', fmt(payable)], ['Total covered by Flexicare', fmt(flexicare70)]);
+    resultTexts[out.id] = buildCopyText('Scheme 8: 70/30 Sharing', lines);
 
     out.innerHTML = coverBar(covPct, 100-covPct) +
       '<div class="result-rows">' +
