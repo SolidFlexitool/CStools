@@ -4007,6 +4007,12 @@
     "category": "Humerus (Upper Arm) and Elbow",
     "subCategory": "Amputation"
   },
+    "25000": {
+    "description": "Tendon sheath incision; at radial styloid (e.g., for deQuervain's disease)",
+    "unit": 60,
+    "category": "Forearm and Wrist",
+    "subCategory": "Incision"
+  },
   "25020": {
     "description": "Decompression fasciotomy, forearm and/or wrist; flexor or extensor compartment",
     "unit": 100,
